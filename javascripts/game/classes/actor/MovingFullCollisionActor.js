@@ -39,7 +39,7 @@ define([
 	};
 	MovingFullCollisionActor.prototype.recalculateCollisionBoxes = function() {
 		//calculate some reasonable insets
-		var insetFromSides = Math.max(2, Math.floor(this.width / 10));
+		var insetFromSides = Math.max(2, Math.floor(this.width / 5));
 		var insetFromTop = Math.max(2, Math.floor(this.height / 10));
 		if(insetFromSides >= insetFromTop) {
 			insetFromSides = insetFromTop - 1;
@@ -47,10 +47,30 @@ define([
 
 		//create the collision boxes
 		this.collisionBoxes = [
-			new Rect(this.x + insetFromSides, this.y, this.width - 2 * insetFromSides, this.height / 2, 'bottom'),
-			new Rect(this.x + insetFromTop, this.y, this.width / 2, this.height - 2 * insetFromTop, 'left'),
-			new Rect(this.x + insetFromTop, this.y, this.width / 2, this.height - 2 * insetFromTop, 'right'),
-			new Rect(this.x + insetFromSides, this.y, this.width - 2 * insetFromSides, this.height / 2, 'top')
+			new Rect(
+				this.x + insetFromSides,
+				this.y + this.height / 2,
+				this.width - 2 * insetFromSides,
+				this.height / 2,
+			'bottom'),
+			new Rect(
+				this.x,
+				this.y + insetFromTop,
+				this.width / 2,
+				this.height - 2 * insetFromTop,
+			'left'),
+			new Rect(
+				this.x + this.width / 2,
+				this.y + insetFromTop,
+				this.width / 2,
+				this.height - 2 * insetFromTop,
+			'right'),
+			new Rect(
+				this.x + insetFromSides,
+				this.y,
+				this.width - 2 * insetFromSides,
+				this.height / 2,
+			'top')
 		];
 
 		this._maxHorizontalMovementPerStep = insetFromSides;

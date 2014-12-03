@@ -11,8 +11,8 @@ define([
 	}
 	Mailman.prototype = Object.create(SUPERCLASS.prototype);
 	Mailman.prototype.render = function(ctx, camera) {
-		SUPERCLASS.prototype.render.call(this, ctx, camera);
 		MailmanSprite.render(ctx, camera, this.x, this.y, 0, false);
+		SUPERCLASS.prototype.render.call(this, ctx, camera);
 	};
 	return Mailman;
 });
