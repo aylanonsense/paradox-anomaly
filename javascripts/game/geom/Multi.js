@@ -1,4 +1,3 @@
-if (typeof define !== 'function') { var define = require('amdefine')(module); }
 define(function() {
 	function Multi(geomArr, name) {
 		this._geomType = 'multi';

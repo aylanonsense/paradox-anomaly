@@ -1,4 +1,3 @@
-if (typeof define !== 'function') { var define = require('amdefine')(module); }
 define(function() {
 	function Rect(x, y, width, height, name) {
 		this._geomType = 'rect';

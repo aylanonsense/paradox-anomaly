@@ -1,4 +1,3 @@
-/* istanbul ignore if  */ if (typeof define !== 'function') { var define = require('amdefine')(module); }
 define({
 	TARGET_FRAMERATE: 60, //used for moving actors the "correct" amount each frame
 	WIDTH: 800,

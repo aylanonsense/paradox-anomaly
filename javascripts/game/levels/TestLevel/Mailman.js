@@ -1,7 +1,6 @@
-if (typeof define !== 'function') { var define = require('amdefine')(module); }
 define([
 	'game/classes/actor/MovingFullCollisionActor',
-	'create!game/display/Sprite>Mailman'
+	'create!game/display/Sprite > Mailman'
 ], function(
 	SUPERCLASS,
 	MailmanSprite

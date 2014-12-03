@@ -1,4 +1,3 @@
-if (typeof define !== 'function') { var define = require('amdefine')(module); }
 define({
 	Mailman: {
 		imagePath: '/image/mailman.gif',
