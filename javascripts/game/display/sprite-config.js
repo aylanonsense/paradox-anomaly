@@ -5,8 +5,8 @@ define({
 		width: 23,
 		height: 23,
 		scale: 3,
-		flip: false,
+		flip: true,
 		trim: { x: 7, y: 4, width: 9, height: 18 },
-		loadingColor: '#00f'
+		loadingColor: '#0b85ff'
 	}
 });

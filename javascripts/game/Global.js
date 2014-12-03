@@ -1,6 +1,5 @@
 /* istanbul ignore if  */ if (typeof define !== 'function') { var define = require('amdefine')(module); }
 define({
-	DEBUG_FRAMERATE: null, //only use for debug purposes, set to null
 	TARGET_FRAMERATE: 60, //used for moving actors the "correct" amount each frame
 	WIDTH: 800,
 	HEIGHT: 600,
@@ -20,5 +19,11 @@ define({
 		'STAGE', //on top of the tile grid
 		'FOREGROUND', //on top of stage actors
 		'FAR_FOREGROUND' //on top of the HUD
-	]
+	],
+
+	//debug variables
+	DEBUG_FRAMERATE: null, //only use for debug purposes, set to null
+	DEBUG_HIDE_SPRITES: false, //will not draw any images if true
+	DEBUG_TRACE_SPRITES: true, //will draw a yellow line around all sprites
+	DEBUG_FILL_ACTORS: true //will give actors a red background
 });

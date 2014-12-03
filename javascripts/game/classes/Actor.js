@@ -1,8 +1,10 @@
 if (typeof define !== 'function') { var define = require('amdefine')(module); }
 define([
-	'game/classes/GameObj'
+	'game/classes/GameObj',
+	'game/Global'
 ], function(
-	SUPERCLASS
+	SUPERCLASS,
+	Global
 ) {
 	function Actor(x, y, width, height) {
 		SUPERCLASS.call(this, x, y, width, height);
@@ -24,7 +26,12 @@ define([
 	Actor.prototype.hasMovementRemaining = function() {};
 	Actor.prototype.endOfMovement = function() {};
 	Actor.prototype.endOfFrame = function() {};
-	Actor.prototype.render = function(ctx, camera) {};
+	Actor.prototype.render = function(ctx, camera) {
+		if(Global.DEBUG_FILL_ACTORS) {
+			ctx.fillStyle = 'rgba(255, 0, 0, 0.5)';
+			ctx.fillRect(this.x - camera.x, this.y - camera.y, this.width, this.height);
+		}
+	};
 
 	//interactions
 	Actor.prototype.handleCollision = function(collision, collisionBox) {};

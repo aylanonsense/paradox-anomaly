@@ -1,13 +1,17 @@
 if (typeof define !== 'function') { var define = require('amdefine')(module); }
 define([
+	'game/Global',
 	'game/display/sprite-config'
 ], function(
+	Global,
 	config
 ) {
 	var IMAGES = {};
 
 	function Sprite(key) {
-		if(!config[key]) { throw new Error("There does not exist a spritesheet with an id of '" + key + "'"); }
+		if(!config[key]) {
+			throw new Error("There does not exist a spritesheet with an id of '" + key + "'");
+		}
 
 		//init private vars
 		this._canvas = null;
@@ -18,10 +22,15 @@ define([
 		this._replacements = config[key].replacements || null;
 		this._crop = config[key].crop || null;
 		this._outlineInDebugMode = config[key].outlineInDebugMode !== false;
+		this._frameWidth = this._scale * config[key].width; //width of one frame
+		this._frameHeight = this._scale * config[key].height; //height of one frame
+		this._isTrimmed = !!config[key].trim;
+		this._offsetX = (this._isTrimmed ? this._scale * config[key].trim.x : 0);
+		this._offsetY = (this._isTrimmed ? this._scale * config[key].trim.y : 0);
 
 		//init public vars
-		this.width = this._scale * config[key].width; //width of one frame
-		this.height = this._scale * config[key].height; //height of one frame
+		this.width = (this._isTrimmed ? this._scale * config[key].trim.width : this._frameWidth);
+		this.height = (this._isTrimmed ? this._scale * config[key].trim.height : this._frameHeight);
 		this.key = key;
 
 		//if the image isn't loaded... well, we need to load it
@@ -60,7 +69,8 @@ define([
 		}
 		//if it's done loading, great, now we can manipulate it according to the sprite
 		else {
-			this.onImageLoaded(IMAGES[imagePath].imageData, IMAGES[imagePath].width, IMAGES[imagePath].height);
+			this.onImageLoaded(IMAGES[imagePath].imageData,
+					IMAGES[imagePath].width, IMAGES[imagePath].height);
 		}
 	}
 	Sprite.prototype.onImageLoaded = function(imageData, imageWidth, imageHeight) {
@@ -81,7 +91,8 @@ define([
 		for(var y = minY; y < maxY; y++) {
 			for(var x = minX; x < maxX; x++) {
 				//fill the scaled pixel
-				var r = imageData[i++], g = imageData[i++], b = imageData[i++], a = imageData[i++] / 100.0;
+				var r = imageData[i++], g = imageData[i++],
+					b = imageData[i++], a = imageData[i++] / 100.0;
 				ctx.fillStyle = 'rgba(' + [r, g, b, a].join(',') + ')';
 				if(this._replacements) {
 					var hex = rgbToHex(r, g, b);
@@ -89,7 +100,8 @@ define([
 						ctx.fillStyle = this._replacements[hex];
 					}
 				}
-				ctx.fillRect(this._scale * (x - minX), this._scale * (y - minY), this._scale, this._scale);
+				ctx.fillRect(this._scale * (x - minX), this._scale * (y - minY),
+					this._scale, this._scale);
 				if(this._flipped) {
 					//fill the flipped pixel too
 					ctx.fillRect(this._canvas.width - this._scale * (x - minX + 1),
@@ -103,38 +115,63 @@ define([
 	Sprite.prototype.render = function(ctx, camera, x, y, frame, flip) {
 		x -= camera.x;
 		y -= camera.y;
-		if(this._loaded) {
-			var numCols = this._canvas.width / this.width;
-			var numRows = (this._canvas.height / this.height) / (this._flipped ? 2 : 1);
-			//locate the frame on the Sprite
-			frame = Math.floor(frame % (numCols * numRows));
-			var frameX = frame % numCols;
-			var frameY = Math.floor(frame / numCols);
-			if(flip && this._flipped) {
-				frameX = numCols - frameX - 1;
-				frameY += numRows;
+		if(!Global.DEBUG_HIDE_SPRITES) {
+			if(this._loaded) {
+				var numCols = this._canvas.width / this._frameWidth;
+				var numRows = (this._canvas.height / this._frameHeight) / (this._flipped ? 2 : 1);
+				//locate the frame on the Sprite
+				frame = Math.floor(frame % (numCols * numRows));
+				var frameX = frame % numCols;
+				var frameY = Math.floor(frame / numCols);
+				if(flip && this._flipped) {
+					frameX = numCols - frameX - 1;
+					frameY += numRows;
+				}
+				//draw the image
+				ctx.drawImage(this._canvas,
+					frameX * this._frameWidth,
+					frameY * this._frameHeight,
+					this._frameWidth,
+					this._frameHeight,
+					Math.round(x + (flip ?  this.width + this._offsetX - this._frameWidth : -this._offsetX)), //remove Math.round if choppy
+					Math.round(y - this._offsetY), //remove Math.round if choppy
+					this._frameWidth,
+					this._frameHeight
+				);
 			}
-			//draw the image
-			ctx.drawImage(this._canvas,
-				frameX * this.width, frameY * this.height,
-				this.width, this.height,
-				Math.round(x), Math.round(y), //TODO remove is this makes it choppier
-				this.width, this.height
-			);
+			else {
+				//if the image hasn't loaded yet, we just show a colored rectangle
+				ctx.fillStyle = this._preLoadedColor;
+				ctx.fillRect(
+					Math.round(x), //remove Math.round if choppy
+					Math.round(y), //remove Math.round if choppy
+					this.width,
+					this.height
+				);
+			}
 		}
-		else {
-			//if the image hasn't loaded yet, we just show a colored rectangle
-			ctx.fillStyle = this._preLoadedColor;
-			ctx.fillRect(x, y, this.width, this.height);
+		if(Global.DEBUG_TRACE_SPRITES) {
+			ctx.lineWidth = 1;
+			ctx.strokeStyle = 'rgba(255, 255, 0, 0.75)';
+			ctx.strokeRect(x, y, this.width, this.height);
+			if(this._isTrimmed) {
+				ctx.strokeStyle = 'rgba(255, 255, 0, 0.25)';
+				ctx.strokeRect(
+					x + (flip ? this.width + this._offsetX - this._frameWidth : -this._offsetX),
+					y - this._offsetY,
+					this._frameWidth,
+					this._frameHeight
+				);
+			}
 		}
 		return {
-			width: this.width,
-			height: this.height,
+			width: this._frameWidth,
+			height: this._frameHeight,
 			top: y,
-			bottom: y + this.height,
+			bottom: y + this._frameHeight,
 			left: x,
-			right: x + this.width,
-			center: { x: x + this.width / 2, y: y + this.height / 2 }
+			right: x + this._frameWidth,
+			center: { x: x + this._frameWidth / 2, y: y + this._frameHeight / 2 }
 		};
 	};
 
