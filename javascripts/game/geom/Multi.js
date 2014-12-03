@@ -1,7 +1,7 @@
 define(function() {
 	function Multi(geomArr, name) {
 		this._geomType = 'multi';
-		this._name = name || null;
+		this.name = name || null;
 		this._geoms = geomArr;
 	}
 	Multi.prototype.containsPoint = function(x, y) {

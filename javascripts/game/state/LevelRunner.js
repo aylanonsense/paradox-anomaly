@@ -56,9 +56,13 @@ define([
 		for(i = 0; i < this._level.actors.length; i++) {
 			for(j = this._level.actors.length - 1; j >= 0; j--) {
 				if(i !== j && this._level.actors[i].isAlive() && this._level.actors[j].isAlive()) {
-					var hit = actors[i].isHitting(actors[j]);
+					var hit = this._level.actors[i].isHitting(this._level.actors[j]);
 					if(hit) {
-						hits.push({ hitter: actors[i], hittee: actors[j], hit: hit });
+						hits.push({
+							hitter: this._level.actors[i],
+							hittee: this._level.actors[j],
+							hit: hit
+						});
 					}
 				}
 			}
@@ -86,9 +90,9 @@ define([
 			box = actor.collisionBoxes[i];
 
 			//check for collisions with other actors
-			for(j = 0; j < this._level.actors.length && actor.collisionBox; j++) {
+			for(j = 0; j < this._level.actors.length; j++) {
 				if(this._level.actors[j].isAlive() && !this._level.actors[j].sameAs(actor)) {
-					collision = box.isOverlapping(this._level.actors[j].collidableBox);
+					collision = this._level.actors[j].collidableBox.isOverlapping(box);
 					if(collision) {
 						actor.handleCollision(collision, box);
 						actor.recalculateCollisionBoxes();
@@ -98,7 +102,7 @@ define([
 
 			//check for collisions with obstacles
 			for(j = 0; j < this._level.obstacles.length; j++) {
-				collision = box.isOverlapping(this._level.obstacles[j].collidableBox);
+				collision = this._level.obstacles[j].collidableBox.isOverlapping(box);
 				if(collision) {
 					actor.handleCollision(collision, box);
 					actor.recalculateCollisionBoxes();
@@ -108,7 +112,7 @@ define([
 			//check for collisions with tiles
 			tiles = this._level.backgroundTileGrid.getTilesOverlapping(actor.boundingBox);
 			for(j = 0; j < tiles.length; j++) {
-				collision = box.isOverlapping(tiles[j].collidableBox);
+				collision = tiles[j].collidableBox.isOverlapping(box);
 				if(collision) {
 					actor.handleCollision(collision, box);
 					actor.recalculateCollisionBoxes();
@@ -116,7 +120,7 @@ define([
 			}
 			tiles = this._level.tileGrid.getTilesOverlapping(actor.boundingBox);
 			for(j = 0; j < tiles.length; j++) {
-				collision = box.isOverlapping(tiles[j].collidableBox);
+				collision = tiles[j].collidableBox.isOverlapping(box);
 				if(collision) {
 					actor.handleCollision(collision, box);
 					actor.recalculateCollisionBoxes();

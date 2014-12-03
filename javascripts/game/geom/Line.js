@@ -1,7 +1,7 @@
 define(function() {
 	function Line(start, end, name) {
 		this._geomType = 'line';
-		this._name = name || null;
+		this.name = name || null;
 		if(arguments.length >= 4) {
 			start = { x: arguments[0], y: arguments[1] };
 			end = { x: arguments[2], y: arguments[3] };

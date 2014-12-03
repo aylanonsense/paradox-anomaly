@@ -44,7 +44,7 @@ define([
 	Actor.prototype.handleCollision = function(collision, collisionBox) {};
 	Actor.prototype.isHitting = function(actor) {
 		var hits = [];
-		if(this.hitBoxes && other.hurtBoxes) {
+		if(this.hitBoxes && actor.hurtBoxes) {
 			for(var i = 0; i < this.hitBoxes.length; i++) {
 				for(var j = 0; j < actor.hurtBoxes.length; j++) {
 					if(this.hitBoxes[i].sharesATypeWith(actor.hurtBoxes[j])) {

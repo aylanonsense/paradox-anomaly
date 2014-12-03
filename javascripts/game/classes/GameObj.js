@@ -31,7 +31,7 @@ define([
 		get: function() {
 			return {
 				x: this.boundingBox.x + this.boundingBox.width / 2,
-				y: this.boundingBox.x + this.boundingBox.height / 2
+				y: this.boundingBox.y + this.boundingBox.height / 2
 			};
 		},
 		set: function(x, y) {
@@ -44,8 +44,8 @@ define([
 		set: function(x) { this.boundingBox.x = x; }
 	});
 	Object.defineProperty(GameObj.prototype, 'right', {
-		get: function() { return this.boundingBox.y; },
-		set: function(y) { this.boundingBox.y = y; }
+		get: function() { return this.boundingBox.x + this.boundingBox.width; },
+		set: function(x) { this.boundingBox.x = x - this.boundingBox.width; }
 	});
 	Object.defineProperty(GameObj.prototype, 'top', {
 		get: function() { return this.boundingBox.y; },

@@ -132,8 +132,8 @@ define([
 					frameY * this._frameHeight,
 					this._frameWidth,
 					this._frameHeight,
-					Math.round(x + (flip ?  this.width + this._offsetX - this._frameWidth : -this._offsetX)), //remove Math.round if choppy
-					Math.round(y - this._offsetY), //remove Math.round if choppy
+					x + (flip ?  this.width + this._offsetX - this._frameWidth : -this._offsetX),
+					y - this._offsetY,
 					this._frameWidth,
 					this._frameHeight
 				);
@@ -141,12 +141,7 @@ define([
 			else {
 				//if the image hasn't loaded yet, we just show a colored rectangle
 				ctx.fillStyle = this._preLoadedColor;
-				ctx.fillRect(
-					Math.round(x), //remove Math.round if choppy
-					Math.round(y), //remove Math.round if choppy
-					this.width,
-					this.height
-				);
+				ctx.fillRect(x, y, this.width, this.height);
 			}
 		}
 		if(Global.DEBUG_TRACE_SPRITES) {

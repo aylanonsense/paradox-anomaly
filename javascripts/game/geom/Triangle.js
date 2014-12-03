@@ -7,7 +7,7 @@ define([
 ) {
 	function Triangle(x, y, width, height, rightAngleSide, name) {
 		this._geomType = 'triangle';
-		this._name = name || null;
+		this.name = name || null;
 		this._rect = new Rect(x, y, width, height);
 		if(rightAngleSide === 'upper-left') {
 			this._line = new Line(x, y + height, x + width, y);

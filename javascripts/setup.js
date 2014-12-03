@@ -19,6 +19,10 @@ requirejs([
 ) {
 	//init vars
 	var ctx = $('#game-canvas')[0].getContext('2d');
+	ctx.imageSmoothingEnabled = Global.IMAGE_SMOOTHING;
+	ctx.webkitImageSmoothingEnabled = Global.IMAGE_SMOOTHING;
+	ctx.msImageSmoothingEnabled = Global.IMAGE_SMOOTHING;
+	ctx.imageSmoothingEnabled = Global.IMAGE_SMOOTHING;
 
 	//add input listeners
 	var keyboard = {};

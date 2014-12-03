@@ -4,6 +4,7 @@ define({
 	HEIGHT: 600,
 	TILE_SIZE: 32,
 	MAX_STEPS_PER_FRAME: 20,
+	IMAGE_SMOOTHING: false,
 	KEY_BINDINGS: {
 		32: 'JUMP', //space bar
 		37: 'MOVE_LEFT', //left arrow key

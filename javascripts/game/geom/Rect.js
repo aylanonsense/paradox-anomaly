@@ -1,7 +1,7 @@
 define(function() {
 	function Rect(x, y, width, height, name) {
 		this._geomType = 'rect';
-		this._name = name || null;
+		this.name = name || null;
 		this.x = x;
 		this.y = y;
 		this.width = width;
