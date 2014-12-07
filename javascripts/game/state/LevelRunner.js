@@ -5,7 +5,6 @@ define([
 ) {
 	function LevelRunner(level) {
 		this._level = level;
-		this._camera = { x: 0, y: 0 };
 	}
 	LevelRunner.prototype.update = function() {
 		var i, j, steps;
@@ -132,34 +131,34 @@ define([
 		ctx.fillStyle = this._level.backgroundColor;
 		ctx.fillRect(0, 0, Global.WIDTH, Global.HEIGHT);
 		this._renderLayer(ctx, 'FAR_BACKGROUND');
-		this._level.backgroundTileGrid.render(ctx, this._camera);
+		this._level.backgroundTileGrid.render(ctx, this._level.camera);
 		this._renderLayer(ctx, 'BACKGROUND');
-		this._level.tileGrid.render(ctx, this._camera);
+		this._level.tileGrid.render(ctx, this._level.camera);
 		this._renderLayer(ctx, 'STAGE');
 		this._renderLayer(ctx, 'FOREGROUND');
-		this._level.renderHUD(ctx, this._camera);
+		this._level.renderHUD(ctx, this._level.camera);
 		this._renderLayer(ctx, 'FAR_FOREGROUND');
 	};
 	LevelRunner.prototype._renderLayer = function(ctx, layer) {
 		var i;
 		for(i = 0; i < this._level.obstacles.length; i++) {
 			if(this._level.obstacles[i].renderLayer === layer) {
-				this._level.obstacles[i].render(ctx, this._camera);
+				this._level.obstacles[i].render(ctx, this._level.camera);
 			}
 		}
 		for(i = 0; i < this._level.widgets.length; i++) {
 			if(this._level.widgets[i].renderLayer === layer) {
-				this._level.widgets[i].render(ctx, this._camera);
+				this._level.widgets[i].render(ctx, this._level.camera);
 			}
 		}
 		for(i = 0; i < this._level.actors.length; i++) {
 			if(this._level.actors[i].isAlive() && this._level.actors[i].renderLayer === layer) {
-				this._level.actors[i].render(ctx, this._camera);
+				this._level.actors[i].render(ctx, this._level.camera);
 			}
 		}
 		for(i = 0; i < this._level.effects.length; i++) {
 			if(this._level.effects[i].isAlive() && this._level.effects[i].renderLayer === layer) {
-				this._level.effects[i].render(ctx, this._camera);
+				this._level.effects[i].render(ctx, this._level.camera);
 			}
 		}
 	};

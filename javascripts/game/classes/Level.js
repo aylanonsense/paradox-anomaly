@@ -11,6 +11,7 @@ define([
 		this.widgets = [];
 		this.actors = [];
 		this.effects = [];
+		this.camera = { x: 0, y: 0 };
 	}
 	Level.prototype.startOfFrame = function() {};
 	Level.prototype.endOfFrame = function() {};
