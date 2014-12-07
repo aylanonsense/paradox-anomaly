@@ -1,5 +1,5 @@
 define([
-	'game/classes/TileGrid'
+	'game/tile/TileGrid'
 ], function(
 	TileGrid
 ) {

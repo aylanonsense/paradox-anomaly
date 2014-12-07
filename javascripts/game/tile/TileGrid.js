@@ -1,11 +1,24 @@
 define([
-	'game/Global'
+	'game/Global',
+	'game/tile/Tile',
+	'game/tile/tile-config'
 ], function(
-	Global
+	Global,
+	Tile,
+	config
 ) {
-	function TileGrid() {
-		this._tiles = { minRow: null, maxRow: null };
+	//create a lookup table of tile symbols
+	var TILE_SYMBOL_LOOKUP = {};
+	for(var key in config) {
+		TILE_SYMBOL_LOOKUP[config[key].symbol] = config[key];
 	}
+
+	function TileGrid() {
+		this._reset();
+	}
+	TileGrid.prototype._reset = function() {
+		this._tiles = { minRow: null, maxRow: null };
+	};
 	TileGrid.prototype.get = function(col, row) {
 		return (this._tiles[row] && this._tiles[row][col]) || null;
 	};
@@ -88,5 +101,30 @@ define([
 	TileGrid.prototype.getMaxRow = function() {
 		return this._tiles.maxRow;
 	};
+	TileGrid.prototype.loadFromMap = function(map) {
+		this._reset();
+		for(var r = 0; r < map.tiles.length; r++) {
+			for(var c = 0; c < map.tiles[r].length; c++) {
+				if(map.tiles[r][c] !== ' ') {
+					var params = TILE_SYMBOL_LOOKUP[map.tiles[r][c]];
+					var frame = charToNum(map.frames && map.frames[r] && map.frames[r][c]);
+					var variant = charToNum(map.variants && map.variants[r] && map.variants[r][c]);
+					this.add(new Tile(c, r, params, frame, variant));
+				}
+			}
+		}
+	};
+
+	//helper functions
+	function charToNum(c) {
+		c = c || '0';
+		var frame = c.charCodeAt(0);
+		return (frame > 64 ? frame - 55 : frame - 48);
+	}
+	function numToChar(frame) {
+		frame = frame || '0';
+		return String.fromCharCode((frame > 9 ? frame + 55 : frame + 48));
+	}
+
 	return TileGrid;
 });

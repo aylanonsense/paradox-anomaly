@@ -1,6 +1,6 @@
 define([
 	'game/classes/actor/MovingFullCollisionActor',
-	'create!game/display/Sprite > Mailman'
+	'create!game/display/Sprite > GrassTile'
 ], function(
 	SUPERCLASS,
 	MailmanSprite

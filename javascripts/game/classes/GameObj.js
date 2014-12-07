@@ -1,6 +1,8 @@
 define([
+	'game/Global',
 	'game/geom/Rect'
 ], function(
+	Global,
 	Rect
 ) {
 	var NEXT_GAME_OBJ_ID = 0;
@@ -17,6 +19,18 @@ define([
 		this._level = level;
 	};
 	GameObj.prototype.addedToLevel = function() {};
+	GameObj.prototype.render = function(ctx, camera) {
+		if(Global.DEBUG_FILL_COLLISION_BOXES) {
+			if(this.collidableBox) {
+				this.collidableBox.render(ctx, camera, 'rgba(0, 255, 255, 0.75)', false);
+			}
+			if(this.collisionBoxes) {
+				for(var i = 0; i < this.collisionBoxes.length; i++) {
+					this.collisionBoxes[i].render(ctx, camera, 'rgba(0, 255, 0, 0.75)', false);
+				}
+			}
+		}
+	};
 
 	//define useful getters/setters
 	Object.defineProperty(GameObj.prototype, 'x', {

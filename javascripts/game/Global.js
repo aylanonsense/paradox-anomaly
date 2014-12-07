@@ -2,7 +2,7 @@ define({
 	TARGET_FRAMERATE: 60, //used for moving actors the "correct" amount each frame
 	WIDTH: 800,
 	HEIGHT: 600,
-	TILE_SIZE: 32,
+	TILE_SIZE: 36,
 	MAX_STEPS_PER_FRAME: 20,
 	IMAGE_SMOOTHING: false,
 	KEY_BINDINGS: {

@@ -30,14 +30,7 @@ define([
 			ctx.fillStyle = 'rgba(255, 0, 0, 0.5)';
 			ctx.fillRect(this.x - camera.x, this.y - camera.y, this.width, this.height);
 		}
-		if(Global.DEBUG_FILL_COLLISION_BOXES) {
-			if(this.collidableBox) {
-				this.collidableBox.render(ctx, camera, 'rgba(0, 255, 255, 0.75)', false);
-			}
-			for(var i = 0; i < this.collisionBoxes.length; i++) {
-				this.collisionBoxes[i].render(ctx, camera, 'rgba(0, 255, 0, 0.75)', false);
-			}
-		}
+		SUPERCLASS.prototype.render.call(this, ctx, camera);
 	};
 
 	//interactions
