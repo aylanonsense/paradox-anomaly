@@ -13,11 +13,17 @@ define([
 	function render(ctx) {
 		scene.render(ctx);
 	}
+	function onMouseEvent(evt) {
+		scene.onMouseEvent(evt);
+	}
+	function onKeyboardEvent(evt, keyboard) {
+		scene.onKeyboardEvent(evt, keyboard);
+	}
 
 	return {
 		update: update,
 		render: render,
-		onMouseEvent: function() {},
-		onKeyboardEvent: function() {}
+		onMouseEvent: onMouseEvent,
+		onKeyboardEvent: onKeyboardEvent
 	};
 });

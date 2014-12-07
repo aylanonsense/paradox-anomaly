@@ -162,5 +162,11 @@ define([
 			}
 		}
 	};
+	LevelRunner.prototype.onKeyboardEvent = function(evt, keyboard) {
+		if(this._level.player) {
+			this._level.player.onKeyboardEvent(evt, keyboard);
+		}
+	};
+	LevelRunner.prototype.onMouseEvent = function(evt) {};
 	return LevelRunner;
 });

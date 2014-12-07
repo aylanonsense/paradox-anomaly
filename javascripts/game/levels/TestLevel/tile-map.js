@@ -1,30 +1,36 @@
 define({
 	foreground: {
 		tiles: [
-			'GGG GGG',
+			'GGG GGG GG',
+			'',
 			'         GGGGGGG',
+			'',
 			'G',
 			'G                 G',
-			'G   GG       GGGGGG',
-			'GGGGGG  GGGGGG',
+			'G            GGGGGG',
+			'GGGGGGGGGGGGGG',
 			'    GG'
 		],
 		frames: [
-			'KLM OPQ',
+			'KLM OPQ IJ',
+			'',
 			'         NR123GH',
+			'',
 			'4',
 			'8                 4',
-			'8   IJ       41300C',
-			'C00057  12230C',
+			'8            41300C',
+			'C000572222230C',
 			'    DF'
 		],
 		variants: [
-			'111 000',
+			'111 000 00',
+			'',
 			'         0000000',
+			'',
 			'1',
 			'1                 0',
-			'1   11       000000',
-			'111111  000000',
+			'1            000000',
+			'11111110000000',
 			'    11'
 		]
 	},
