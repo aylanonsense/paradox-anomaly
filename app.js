@@ -12,4 +12,4 @@ var app = express();
 app.use(lessMiddleware({ src: __dirname + "/public", compress : true }));
 app.use(express.static(__dirname + '/public'));
 app.use('/javascripts', express.static(__dirname + '/javascripts'));
-app.listen(3000);
+app.listen(process.env.PORT || 3000);
