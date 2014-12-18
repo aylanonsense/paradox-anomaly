@@ -1,4 +1,4 @@
-mailquest
-=========
+paradox-anomaly
+===============
 
-A platforming game where you play a mailman.
+A puzzle game involving time travel.
