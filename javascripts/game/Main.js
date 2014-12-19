@@ -1,5 +1,5 @@
 define([
-	'game/state/LevelRunner',
+	'game/scene/LevelRunner',
 	'game/levels/TestLevel/Level'
 ], function(
 	LevelRunner,
