@@ -22,11 +22,11 @@ define([
 				this._tile.removeOccupant(this);
 				this._tile = this._nextTile;
 				this._tile.addOccupant(this);
-				this._nextTile = null;
 			}
 			if(this._moveFrame === 0) {
-				this._prevTile = this._tile;
 				this._moveFrame = null;
+				this._prevTile = this._tile;
+				this._nextTile = null;
 			}
 		}
 	};
@@ -70,7 +70,14 @@ define([
 			if(!this._tile) {
 				return null;
 			}
-			return this._tile.col * Global.TILE_WIDTH;
+			else if(this._moveFrame !== null) {
+				var colChange = this._nextTile.col - this._prevTile.col;
+				var dx = colChange * (1 - this._moveFrame / this._framesToMoveBetweenTiles);
+				return (this._prevTile.col + 0.5 + dx) * Global.TILE_WIDTH;
+			}
+			else {
+				return (this._tile.col + 0.5) * Global.TILE_WIDTH;
+			}
 		},
 		set: function(x) { throw new Error("Cannot set x of Actor"); }
 	});
@@ -79,7 +86,14 @@ define([
 			if(!this._tile) {
 				return null;
 			}
-			return this._tile.row * Global.TILE_HEIGHT;
+			else if(this._moveFrame !== null) {
+				var rowChange = this._nextTile.row - this._prevTile.row;
+				var dy = rowChange * (1 - this._moveFrame / this._framesToMoveBetweenTiles);
+				return (this._prevTile.row + 0.5 + dy) * Global.TILE_HEIGHT;
+			}
+			else {
+				return (this._tile.row + 0.5) * Global.TILE_HEIGHT;
+			}
 		},
 		set: function(y) { throw new Error("Cannot set y of Actor"); }
 	});

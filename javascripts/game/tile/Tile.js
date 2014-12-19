@@ -1,4 +1,8 @@
-define(function() {
+define([
+	'game/Global'
+], function(
+	Global
+) {
 	function Tile(col, row) {
 		this.col = col;
 		this.row = row;
@@ -30,11 +34,20 @@ define(function() {
 		return this._occupants.every(doesNotOccupyFullTile) &&
 				this._reservedFor.every(doesNotOccupyFullTile);
 	};
+	Tile.prototype.renderOccupants = function(ctx, camera) {
+		for(var i = 0; i < this._occupants.length; i++) {
+			this._occupants[i].render(ctx, camera);
+		}
+	};
 
 	//to be overridden
 	Tile.prototype.render = function(ctx, camera) {
-		for(var i = 0; i < this._occupants.length; i++) {
-			this._occupants[i].render(ctx, camera);
+		if(Global.DEBUG_DRAW_GRIDLINES) {
+			ctx.strokeStyle = '#fff';
+			ctx.lineWidth = 1;
+			ctx.strokeRect(this.col * Global.TILE_WIDTH - camera.x,
+				this.row * Global.TILE_HEIGHT - camera.y,
+				Global.TILE_WIDTH, Global.TILE_HEIGHT);
 		}
 	};
 	Tile.prototype.onEnter = function(occupant) {};

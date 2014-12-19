@@ -20,9 +20,6 @@ define({
 	],
 
 	//debug variables
-	DEBUG_FRAMERATE: null, //only use for debug purposes, set to null
-	DEBUG_HIDE_SPRITES: false, //will not draw any images if true
-	DEBUG_TRACE_SPRITES: false, //will draw a yellow line around all sprites
-	DEBUG_FILL_COLLISION_BOXES: false, //will fill in collisions boxes with green and teal backgrounds
-	DEBUG_FILL_ACTORS: false //will give actors a red background
+	DEBUG_FRAMERATE: null,
+	DEBUG_DRAW_GRIDLINES: true
 });

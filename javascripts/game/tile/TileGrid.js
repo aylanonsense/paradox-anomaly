@@ -41,6 +41,11 @@ define(function() {
 							this._tiles[r][c].render(ctx, camera);
 						}
 					}
+					for(c = this._tiles[r].minCol; c <= this._tiles[r].maxCol; c++) {
+						if(this._tiles[r][c]) {
+							this._tiles[r][c].renderOccupants(ctx, camera);
+						}
+					}
 				}
 			}
 		}
