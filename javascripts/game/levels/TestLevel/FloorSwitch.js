@@ -9,6 +9,7 @@ define([
 			width: 30,
 			height: 4,
 			occupiesFullTile: false,
+			facingMatters: false,
 			debugColor: '#ff0',
 			debugFillColor: '#aa0'
 		});

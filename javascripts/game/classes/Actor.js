@@ -11,6 +11,7 @@ define([
 		this._tile = null;
 		this._nextTile = null;
 		this._facing = 'NORTH';
+		this._facingMatters = params.facingMatters !== false;
 		this._framesToMoveBetweenTiles = (params.moveSpeed ?
 			Global.TARGET_FRAMERATE / params.moveSpeed : null);
 		this.width = params.width || 0;
@@ -96,6 +97,19 @@ define([
 			ctx.strokeRect(this.x - camera.x - this.width / 2,
 				this.y - camera.y - perceivedDepth / 2,
 				this.width, perceivedDepth);
+			ctx.lineWidth = 4;
+			if(this._facingMatters) {
+				ctx.beginPath();
+				ctx.moveTo(this.x - camera.x, this.y - camera.y - perceivedHeight);
+				var dx = 0, dy = 0;
+				if(this._facing === 'NORTH') { dy = -1; }
+				else if(this._facing === 'EAST') { dx = 1; }
+				else if(this._facing === 'SOUTH') { dy = 1; }
+				else if(this._facing === 'WEST') { dx = -1; }
+				ctx.lineTo(this.x - camera.x + dx * this.width / 2,
+					this.y - camera.y - perceivedHeight + dy * perceivedDepth / 2);
+				ctx.stroke();
+			}
 		}
 	};
 

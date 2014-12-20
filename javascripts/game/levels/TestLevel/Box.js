@@ -8,6 +8,7 @@ define([
 			moveSpeed: 2,
 			width: 20,
 			height: 20,
+			facingMatters: false,
 			debugColor: '#0ff',
 			debugFillColor: '#0aa'
 		});
