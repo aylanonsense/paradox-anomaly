@@ -15,8 +15,11 @@ define([
 			Global.TARGET_FRAMERATE / params.moveSpeed : null);
 		this.width = params.width || 0;
 		this.height = params.height || 0;
+		this.depth = (typeof params.depth === 'number' ? params.depth : this.width);
 		this._moveFrame = null;
-		this.occupiesFullTile = true;
+		this.occupiesFullTile = (params.occupiesFullTile !== false);
+		this._debugColor = params.debugColor || '#0a0';
+		this._debugFillColor = params.debugFillColor || null;
 	}
 	Actor.prototype.tick = function() {
 		if(this._moveFrame !== null) {
@@ -34,7 +37,7 @@ define([
 		}
 	};
 	Actor.prototype.sameAs = function(other) {
-		return other && other._entityId == this._entityId;
+		return other && other._actorId == this._actorId;
 	};
 	Actor.prototype.addToLevel = function(level, tile) {
 		this._level = level;
@@ -58,6 +61,12 @@ define([
 			}
 		}
 	};
+	Actor.prototype.isMoving = function() {
+		return this._moveFrame !== null;
+	};
+	Actor.prototype.getFacing = function() {
+		return this._facing;
+	};
 	Actor.prototype.isAlive = function() {
 		return true;
 	};
@@ -65,7 +74,30 @@ define([
 	Actor.prototype.endOfFrame = function() {};
 	Actor.prototype.onEnter = function(tile) {};
 	Actor.prototype.onLeave = function(tile) {};
-	Actor.prototype.render = function(ctx, camera) {};
+	Actor.prototype.render = function(ctx, camera) {
+		if(Global.DEBUG_DRAW_ACTOR_BORDERS) {
+			var perceivedDepth = this.depth * Global.DEBUG_DEPTH_MULT;
+			var perceivedHeight = this.height * Global.DEBUG_HEIGHT_MULT;
+			if(this._debugFillColor) {
+				ctx.fillStyle = this._debugFillColor;
+				ctx.fillRect(this.x - camera.x - this.width / 2,
+					this.y - camera.y - perceivedHeight - perceivedDepth / 2,
+					this.width, perceivedHeight + perceivedDepth);
+			}
+			ctx.strokeStyle = this._debugColor;
+			ctx.lineWidth = 2;
+			ctx.strokeRect(this.x - camera.x - this.width / 2,
+				this.y - camera.y - perceivedDepth / 2 - perceivedHeight,
+				this.width, perceivedDepth);
+			ctx.strokeRect(this.x - camera.x - this.width / 2,
+				this.y - camera.y - perceivedHeight - perceivedDepth / 2,
+				this.width, perceivedHeight + perceivedDepth);
+			ctx.lineWidth = 1;
+			ctx.strokeRect(this.x - camera.x - this.width / 2,
+				this.y - camera.y - perceivedDepth / 2,
+				this.width, perceivedDepth);
+		}
+	};
 
 	//define useful getters/setters
 	Object.defineProperty(Actor.prototype, 'x', {

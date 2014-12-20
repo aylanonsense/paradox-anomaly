@@ -37,7 +37,18 @@ define([
 	};
 	Tile.prototype.renderOccupants = function(ctx, camera) {
 		for(var i = 0; i < this._occupants.length; i++) {
-			this._occupants[i].render(ctx, camera);
+			if(!this._occupants[i].isMoving() || (this._occupants[i].getFacing() !== 'SOUTH' &&
+				this._occupants[i].getFacing() !== 'NORTH')) {
+				this._occupants[i].render(ctx, camera);
+			}
+		}
+	};
+	Tile.prototype.renderOccupantsMovingVertically = function(ctx, camera) {
+		for(var i = 0; i < this._occupants.length; i++) {
+			if(this._occupants[i].isMoving() && (this._occupants[i].getFacing() === 'SOUTH' ||
+				this._occupants[i].getFacing() === 'NORTH')) {
+				this._occupants[i].render(ctx, camera);
+			}
 		}
 	};
 

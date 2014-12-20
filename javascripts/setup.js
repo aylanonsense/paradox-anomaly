@@ -17,6 +17,11 @@ requirejs([
 	Global,
 	Game
 ) {
+	//compute some globals
+	var viewingAngle = Math.atan2(Global.TILE_HEIGHT, Global.TILE_WIDTH - Global.TILE_HEIGHT);
+	Global.DEBUG_HEIGHT_MULT = Math.cos(viewingAngle);
+	Global.DEBUG_DEPTH_MULT = Math.sin(viewingAngle);
+
 	//init vars
 	var ctx = $('#game-canvas')[0].getContext('2d');
 	ctx.imageSmoothingEnabled = Global.IMAGE_SMOOTHING;
@@ -29,7 +34,7 @@ requirejs([
 	for(var key in Global.KEY_BINDINGS) { keyboard[Global.KEY_BINDINGS[key]] = false; }
 	$(document).on('keydown keyup', function(evt) {
 		evt.isDown = (evt.type === 'keydown');
-		if(Global.KEY_BINDINGS[evt.which] && keyboard[evt.which] !== evt.isDown) {
+		if(Global.KEY_BINDINGS[evt.which] && keyboard[Global.KEY_BINDINGS[evt.which]] !== evt.isDown) {
 			keyboard[Global.KEY_BINDINGS[evt.which]] = evt.isDown;
 			evt.gameKey = Global.KEY_BINDINGS[evt.which];
 			Game.onKeyboardEvent(evt, keyboard);

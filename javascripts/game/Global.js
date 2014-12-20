@@ -3,7 +3,7 @@ define({
 	CANVAS_WIDTH: 800,
 	CANVAS_HEIGHT: 600,
 	TILE_WIDTH: 36,
-	TILE_HEIGHT: 20,
+	TILE_HEIGHT: 24,
 	IMAGE_SMOOTHING: false,
 	KEY_BINDINGS: {
 		37: 'MOVE_LEFT', //left arrow key
@@ -21,5 +21,6 @@ define({
 
 	//debug variables
 	DEBUG_FRAMERATE: null,
-	DEBUG_DRAW_GRIDLINES: true
+	DEBUG_DRAW_GRIDLINES: true,
+	DEBUG_DRAW_ACTOR_BORDERS: true
 });

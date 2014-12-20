@@ -34,9 +34,11 @@ define(function() {
 	};
 	TileGrid.prototype.render = function(ctx, camera) {
 		if(this._tiles.minRow !== null) {
-			for(var r = this._tiles.minRow; r <= this._tiles.maxRow; r++) {
+			for(var r = this._tiles.minRow; r <= this._tiles.maxRow + 1; r++) {
+				var c;
+				//render occupants
 				if(this._tiles[r]) {
-					for(var c = this._tiles[r].minCol; c <= this._tiles[r].maxCol; c++) {
+					for(c = this._tiles[r].minCol; c <= this._tiles[r].maxCol; c++) {
 						if(this._tiles[r][c]) {
 							this._tiles[r][c].render(ctx, camera);
 						}
@@ -44,6 +46,14 @@ define(function() {
 					for(c = this._tiles[r].minCol; c <= this._tiles[r].maxCol; c++) {
 						if(this._tiles[r][c]) {
 							this._tiles[r][c].renderOccupants(ctx, camera);
+						}
+					}
+				}
+				//render the previous row's occupants
+				if(this._tiles[r - 1]) {
+					for(c = this._tiles[r - 1].minCol; c <= this._tiles[r - 1].maxCol; c++) {
+						if(this._tiles[r - 1][c]) {
+							this._tiles[r - 1][c].renderOccupantsMovingVertically(ctx, camera);
 						}
 					}
 				}
