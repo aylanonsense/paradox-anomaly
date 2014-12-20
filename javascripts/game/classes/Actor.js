@@ -59,8 +59,11 @@ define([
 			if(nextTile && nextTile.hasRoomFor(this)) {
 				this._nextTile = nextTile;
 				this._moveFrame = this._framesToMoveBetweenTiles;
+				this._nextTile.reserveForOccupant(this);
+				return true;
 			}
 		}
+		return false;
 	};
 	Actor.prototype.isMoving = function() {
 		return this._moveFrame !== null;

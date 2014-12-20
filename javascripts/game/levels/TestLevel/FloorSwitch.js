@@ -6,7 +6,7 @@ define([
 	function FloorSwitch() {
 		SUPERCLASS.call(this, {
 			moveSpeed: 2,
-			width: 30,
+			width: 14,
 			height: 4,
 			occupiesFullTile: false,
 			facingMatters: false,

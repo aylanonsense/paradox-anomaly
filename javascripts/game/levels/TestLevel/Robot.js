@@ -11,15 +11,14 @@ define([
 			debugColor: '#f00',
 			debugFillColor: '#a00'
 		});
+		this._currMoveDir = 'SOUTH';
 	}
 	Robot.prototype = Object.create(SUPERCLASS.prototype);
 	Robot.prototype.startOfFrame = function() {
 		SUPERCLASS.prototype.startOfFrame.call(this);
-		var r = Math.random();
-		if(r < 0.25) { this.move('NORTH'); }
-		else if(r < 0.50) { this.move('SOUTH'); }
-		else if(r < 0.75) { this.move('EAST'); }
-		else { this.move('WEST'); }
+		if(!this.isMoving() && !this.move(this._currMoveDir)) {
+			this._currMoveDir = (this._currMoveDir === 'SOUTH' ? 'NORTH' : 'SOUTH');
+		}
 	};
 	return Robot;
 });
