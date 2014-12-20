@@ -7,9 +7,9 @@ define({
 	IMAGE_SMOOTHING: false,
 	KEY_BINDINGS: {
 		37: 'MOVE_LEFT', //left arrow key
-		38: 'MOVE_DOWN', //down arrow key
 		39: 'MOVE_RIGHT', //right arrow key
-		40: 'MOVE_UP', //up arrow key
+		38: 'MOVE_UP', //up arrow key
+		40: 'MOVE_DOWN' //down arrow key
 	},
 	RENDER_LAYERS: [
 		'FAR_BACKGROUND', //on top of the background image/color

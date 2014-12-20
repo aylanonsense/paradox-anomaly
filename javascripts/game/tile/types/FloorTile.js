@@ -10,7 +10,7 @@ define([
 	}
 	FloorTile.prototype = Object.create(SUPERCLASS.prototype);
 	FloorTile.prototype.render = function(ctx, camera) {
-		ctx.fillStyle = '#ddd';
+		ctx.fillStyle = (this._occupants.length > 0 ? '#ccf' : '#ddd');
 		ctx.fillRect(this.col * Global.TILE_WIDTH - camera.x,
 			this.row * Global.TILE_HEIGHT - camera.y,
 			Global.TILE_WIDTH, Global.TILE_HEIGHT);

@@ -13,7 +13,10 @@ define([
 		this._facing = 'NORTH';
 		this._framesToMoveBetweenTiles = (params.moveSpeed ?
 			Global.TARGET_FRAMERATE / params.moveSpeed : null);
+		this.width = params.width || 0;
+		this.height = params.height || 0;
 		this._moveFrame = null;
+		this.occupiesFullTile = true;
 	}
 	Actor.prototype.tick = function() {
 		if(this._moveFrame !== null) {
@@ -96,6 +99,14 @@ define([
 			}
 		},
 		set: function(y) { throw new Error("Cannot set y of Actor"); }
+	});
+	Object.defineProperty(Actor.prototype, 'renderX', {
+		get: function() { return this.x - this.width / 2; },
+		set: function(x) { throw new Error("Cannot set renderX of Actor"); }
+	});
+	Object.defineProperty(Actor.prototype, 'renderY', {
+		get: function() { return this.y - this.height; },
+		set: function(y) { throw new Error("Cannot set renderY of Actor"); }
 	});
 	Object.defineProperty(Actor.prototype, 'col', {
 		get: function() { return this._tile && this._tile.col; },

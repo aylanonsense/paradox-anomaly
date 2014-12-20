@@ -1,13 +1,19 @@
 define([
 	'game/classes/Level',
 	'game/Global',
+	'game/levels/TestLevel/Player',
 	'game/levels/TestLevel/Robot',
+	'game/levels/TestLevel/Box',
+	'game/levels/TestLevel/FloorSwitch',
 	'game/tile/types/FloorTile',
 	'game/tile/types/WallTile'
 ], function(
 	SUPERCLASS,
 	Global,
+	Player,
 	Robot,
+	Box,
+	FloorSwitch,
 	FloorTile,
 	WallTile
 ) {
@@ -29,6 +35,9 @@ define([
 		this.camera.y = -Global.CANVAS_HEIGHT / 2 + Global.TILE_HEIGHT / 2 *
 				(this.tileGrid.getMaxRow() - this.tileGrid.getMinRow());
 		this.spawnActor(new Robot(), this.tileGrid.get(1, 1));
+		this.spawnActor(new Box(), this.tileGrid.get(2, 1));
+		this.spawnActor(new FloorSwitch(), this.tileGrid.get(5, 1));
+		this.player = this.spawnActor(new Player(), this.tileGrid.get(3, 4));
 	}
 	Level.prototype = Object.create(SUPERCLASS.prototype);
 	return Level;

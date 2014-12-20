@@ -5,7 +5,9 @@ define([
 ) {
 	function Robot() {
 		SUPERCLASS.call(this, {
-			moveSpeed: 1
+			moveSpeed: 2,
+			width: 20,
+			height: 30
 		});
 	}
 	Robot.prototype = Object.create(SUPERCLASS.prototype);
@@ -19,8 +21,8 @@ define([
 	};
 	Robot.prototype.render = function(ctx, camera) {
 		if(this.x !== null && this.y !== null) {
-			ctx.fillStyle = '#f00';
-			ctx.fillRect(this.x - camera.x - 7.5, this.y - camera.y - 15, 15, 15);
+			ctx.fillStyle = '#c00';
+			ctx.fillRect(this.renderX - camera.x, this.renderY - camera.y, this.width, this.height);
 		}
 		SUPERCLASS.prototype.render.call(this, ctx, camera);
 	};

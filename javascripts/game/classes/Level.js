@@ -21,6 +21,7 @@ define([
 	Level.prototype.spawnActor = function(actor, tile) {
 		this.actors.push(actor);
 		actor.addToLevel(this, tile);
+		return actor;
 	};
 	return Level;
 });

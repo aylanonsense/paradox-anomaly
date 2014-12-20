@@ -31,8 +31,9 @@ define([
 		occupant.onLeave(this);
 	};
 	Tile.prototype.hasRoomFor = function(occupant) {
-		return this._occupants.every(doesNotOccupyFullTile) &&
-				this._reservedFor.every(doesNotOccupyFullTile);
+		return (occupant && !occupant.occupiesFullTile) ||
+			(this._occupants.every(doesNotOccupyFullTile) &&
+			this._reservedFor.every(doesNotOccupyFullTile));
 	};
 	Tile.prototype.renderOccupants = function(ctx, camera) {
 		for(var i = 0; i < this._occupants.length; i++) {
@@ -55,7 +56,7 @@ define([
 
 	//helper methods
 	function doesNotOccupyFullTile(occupant) {
-		return !occupent.occupiesFullTile;
+		return !occupant.occupiesFullTile;
 	}
 
 	return Tile;
