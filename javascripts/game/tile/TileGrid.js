@@ -36,24 +36,27 @@ define(function() {
 		if(this._tiles.minRow !== null) {
 			for(var r = this._tiles.minRow; r <= this._tiles.maxRow + 1; r++) {
 				var c;
-				//render occupants
+				//render the tile
 				if(this._tiles[r]) {
 					for(c = this._tiles[r].minCol; c <= this._tiles[r].maxCol; c++) {
 						if(this._tiles[r][c]) {
 							this._tiles[r][c].render(ctx, camera);
 						}
 					}
-					for(c = this._tiles[r].minCol; c <= this._tiles[r].maxCol; c++) {
-						if(this._tiles[r][c]) {
-							this._tiles[r][c].renderOccupants(ctx, camera);
-						}
-					}
 				}
-				//render the previous row's occupants
+				//render the previous row's occupants that are moving downwards
 				if(this._tiles[r - 1]) {
 					for(c = this._tiles[r - 1].minCol; c <= this._tiles[r - 1].maxCol; c++) {
 						if(this._tiles[r - 1][c]) {
 							this._tiles[r - 1][c].renderOccupantsMovingVertically(ctx, camera);
+						}
+					}
+				}
+				//render occupants
+				if(this._tiles[r]) {
+					for(c = this._tiles[r].minCol; c <= this._tiles[r].maxCol; c++) {
+						if(this._tiles[r][c]) {
+							this._tiles[r][c].renderOccupants(ctx, camera);
 						}
 					}
 				}
