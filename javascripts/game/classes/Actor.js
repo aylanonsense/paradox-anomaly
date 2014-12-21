@@ -26,6 +26,7 @@ define([
 		this.pushStrength = params.pushStrength || 0;
 		this._debugColor = params.debugColor || '#0a0';
 		this._debugFillColor = params.debugFillColor || null;
+		this.isHalfwayToNextTile = false;
 	}
 	Actor.prototype.tick = function() {
 		if(this._moveFrame !== null) {
@@ -34,6 +35,7 @@ define([
 				this._tile.removeOccupant(this);
 				this._tile = this._nextTile;
 				this._tile.addOccupant(this);
+				this.isHalfwayToNextTile = true;
 			}
 			if(this._moveFrame >= this._framesUntilMovementComplete) {
 				this._moveFrame = null;
@@ -63,6 +65,7 @@ define([
 			var nextTile = this._level.tileGrid.get(this.col + dx, this.row + dy);
 			if(nextTile) {
 				if(nextTile.hasRoomFor(this)) {
+					this.isHalfwayToNextTile = false;
 					this._nextTile = nextTile;
 					this._moveFrame = 0;
 					this._framesUntilMovementComplete = Global.TARGET_FRAMERATE / this.moveSpeed;
@@ -71,6 +74,7 @@ define([
 					return true;
 				}
 				else if(this.pushStrength > 0 && nextTile.canPushInto(this, dx, dy)) {
+					this.isHalfwayToNextTile = false;
 					this._nextTile = nextTile;
 					var pushSpeed = this._nextTile.pushOccupants(this, dx, dy);
 					this._moveFrame = 0;

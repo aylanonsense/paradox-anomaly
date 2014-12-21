@@ -65,17 +65,19 @@ define([
 	};
 	Tile.prototype.renderOccupants = function(ctx, camera) {
 		for(var i = 0; i < this._occupants.length; i++) {
-			if(!this._occupants[i].isMoving() || (this._occupants[i].getFacing() !== 'SOUTH' &&
-				this._occupants[i].getFacing() !== 'NORTH')) {
-				this._occupants[i].render(ctx, camera);
+			var o = this._occupants[i];
+			if(!(o.isMoving() && ((o.getFacing() === 'SOUTH' && !o.isHalfwayToNextTile) ||
+					(o.getFacing() === 'NORTH' && o.isHalfwayToNextTile)))) {
+				o.render(ctx, camera);
 			}
 		}
 	};
 	Tile.prototype.renderOccupantsMovingVertically = function(ctx, camera) {
 		for(var i = 0; i < this._occupants.length; i++) {
-			if(this._occupants[i].isMoving() && (this._occupants[i].getFacing() === 'SOUTH' ||
-				this._occupants[i].getFacing() === 'NORTH')) {
-				this._occupants[i].render(ctx, camera);
+			var o = this._occupants[i];
+			if(o.isMoving() && ((o.getFacing() === 'SOUTH' && !o.isHalfwayToNextTile) ||
+					(o.getFacing() === 'NORTH' && o.isHalfwayToNextTile))) {
+				o.render(ctx, camera);
 			}
 		}
 	};
