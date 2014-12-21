@@ -5,11 +5,14 @@ define([
 	SUPERCLASS,
 	Global
 ) {
-	function WallTile(col, row) {
-		SUPERCLASS.call(this, col, row);
+	function WallTile() {
+		SUPERCLASS.call(this);
 	}
 	WallTile.prototype = Object.create(SUPERCLASS.prototype);
 	WallTile.prototype.hasRoomFor = function(occupant) {
+		return false;
+	};
+	WallTile.prototype.canPushInto = function(pusher, dx, dy) {
 		return false;
 	};
 	WallTile.prototype.render = function(ctx, camera) {

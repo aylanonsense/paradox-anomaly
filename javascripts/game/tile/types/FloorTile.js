@@ -5,8 +5,8 @@ define([
 	SUPERCLASS,
 	Global
 ) {
-	function FloorTile(col, row) {
-		SUPERCLASS.call(this, col, row);
+	function FloorTile() {
+		SUPERCLASS.call(this);
 	}
 	FloorTile.prototype = Object.create(SUPERCLASS.prototype);
 	FloorTile.prototype.render = function(ctx, camera) {

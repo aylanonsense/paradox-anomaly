@@ -5,25 +5,26 @@ define(function() {
 	TileGrid.prototype.get = function(col, row) {
 		return (this._tiles[row] && this._tiles[row][col]) || null;
 	};
-	TileGrid.prototype.add = function(tile) {
-		if(this._tiles.minRow === null || tile.row < this._tiles.minRow) {
-			this._tiles.minRow = tile.row;
+	TileGrid.prototype.add = function(tile, col, row) {
+		if(this._tiles.minRow === null || row < this._tiles.minRow) {
+			this._tiles.minRow = row;
 		}
-		if(this._tiles.maxRow === null || tile.row > this._tiles.maxRow) {
-			this._tiles.maxRow = tile.row;
+		if(this._tiles.maxRow === null || row > this._tiles.maxRow) {
+			this._tiles.maxRow = row;
 		}
-		if(!this._tiles[tile.row]) {
-			this._tiles[tile.row] = { minCol: tile.col, maxCol: tile.col };
+		if(!this._tiles[row]) {
+			this._tiles[row] = { minCol: col, maxCol: col };
 		}
 		else {
-			if(tile.col < this._tiles[tile.row].minCol) {
-				this._tiles[tile.row].minCol = tile.col;
+			if(col < this._tiles[row].minCol) {
+				this._tiles[row].minCol = col;
 			}
-			else if(tile.col > this._tiles[tile.row].maxCol) {
-				this._tiles[tile.row].maxCol = tile.col;
+			else if(col > this._tiles[row].maxCol) {
+				this._tiles[row].maxCol = col;
 			}
 		}
-		this._tiles[tile.row][tile.col] = tile;
+		this._tiles[row][col] = tile;
+		tile.addToTileGrid(this, col, row);
 		return tile;
 	};
 	TileGrid.prototype.remove = function(col, row) {

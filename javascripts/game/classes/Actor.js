@@ -1,7 +1,9 @@
 define([
-	'game/Global'
+	'game/Global',
+	'game/Utils'
 ], function(
-	Global
+	Global,
+	Utils
 ) {
 	var NEXT_ID = 0;
 	function Actor(params) {
@@ -12,25 +14,28 @@ define([
 		this._nextTile = null;
 		this._facing = 'NORTH';
 		this._facingMatters = params.facingMatters !== false;
-		this._framesToMoveBetweenTiles = (params.moveSpeed ?
-			Global.TARGET_FRAMERATE / params.moveSpeed : null);
+		this.moveSpeed = params.moveSpeed || null;
 		this.width = params.width || 0;
 		this.height = params.height || 0;
 		this.depth = (typeof params.depth === 'number' ? params.depth : this.width);
 		this._moveFrame = null;
+		this._framesUntilMovementComplete = null;
+		this._framesUntilMovementHalfway = null;
 		this.occupiesFullTile = (params.occupiesFullTile !== false);
+		this.pushWeight = params.pushWeight || 0;
+		this.pushStrength = params.pushStrength || 0;
 		this._debugColor = params.debugColor || '#0a0';
 		this._debugFillColor = params.debugFillColor || null;
 	}
 	Actor.prototype.tick = function() {
 		if(this._moveFrame !== null) {
-			this._moveFrame--;
-			if(this._nextTile !== null && this._moveFrame < this._framesToMoveBetweenTiles / 2) {
+			this._moveFrame++;
+			if(this._nextTile !== null && this._moveFrame > this._framesUntilMovementHalfway) {
 				this._tile.removeOccupant(this);
 				this._tile = this._nextTile;
 				this._tile.addOccupant(this);
 			}
-			if(this._moveFrame === 0) {
+			if(this._moveFrame >= this._framesUntilMovementComplete) {
 				this._moveFrame = null;
 				this._prevTile = this._tile;
 				this._nextTile = null;
@@ -46,21 +51,57 @@ define([
 		this._tile = tile;
 		this._tile.addOccupant(this);
 	};
-	Actor.prototype.move = function(dir) {
+	Actor.prototype.move = function(dx, dy) { //or (dir)
+		if(arguments.length === 1) {
+			var vector = Utils.toVector(arguments[0]);
+			dx = vector.x;
+			dy = vector.y;
+		}
+		var dir = Utils.toDirection(dx, dy);
 		if(this._moveFrame === null) {
 			this._facing = dir;
-			var dx = 0;
-			var dy = 0;
-			if(dir === 'NORTH') { dy = -1; }
-			else if(dir === 'SOUTH') { dy = 1; }
-			else if(dir === 'EAST') { dx = 1; }
-			else if(dir === 'WEST') { dx = -1; }
 			var nextTile = this._level.tileGrid.get(this.col + dx, this.row + dy);
-			if(nextTile && nextTile.hasRoomFor(this)) {
-				this._nextTile = nextTile;
-				this._moveFrame = this._framesToMoveBetweenTiles;
-				this._nextTile.reserveForOccupant(this);
-				return true;
+			if(nextTile) {
+				if(nextTile.hasRoomFor(this)) {
+					this._nextTile = nextTile;
+					this._moveFrame = 0;
+					this._framesUntilMovementComplete = Global.TARGET_FRAMERATE / this.moveSpeed;
+					this._framesUntilMovementHalfway = this._framesUntilMovementComplete / 2;
+					this._nextTile.reserveForOccupant(this);
+					return true;
+				}
+				else if(this.pushStrength > 0 && nextTile.canPushInto(this, dx, dy)) {
+					this._nextTile = nextTile;
+					var pushSpeed = this._nextTile.pushOccupants(this, dx, dy);
+					this._moveFrame = 0;
+					this._framesUntilMovementComplete = Global.TARGET_FRAMERATE / pushSpeed;
+					this._framesUntilMovementHalfway = this._framesUntilMovementComplete / 2;
+					this._nextTile.reserveForOccupant(this);
+					return true;
+				}
+			}
+		}
+		return false;
+	};
+	Actor.prototype.getPushed = function(pushSpeed, dx, dy) { //or (pushSpeed, dir)
+		if(arguments.length === 2) {
+			var vector = Utils.toVector(arguments[0]);
+			dx = vector.x;
+			dy = vector.y;
+		}
+		var dir = Utils.toDirection(dx, dy);
+		if(this._moveFrame === null) {
+			this._facing = dir;
+			var nextTile = this._level.tileGrid.get(this.col + dx, this.row + dy);
+			if(nextTile) {
+				if(nextTile.hasRoomFor(this)) {
+					this._nextTile = nextTile;
+					this._moveFrame = 0;
+					this._framesUntilMovementComplete = Global.TARGET_FRAMERATE / pushSpeed;
+					this._framesUntilMovementHalfway = this._framesUntilMovementComplete / 2;
+					this._nextTile.reserveForOccupant(this);
+					return true;
+				}
 			}
 		}
 		return false;
@@ -124,7 +165,7 @@ define([
 			}
 			else if(this._moveFrame !== null) {
 				var colChange = this._nextTile.col - this._prevTile.col;
-				var dx = colChange * (1 - this._moveFrame / this._framesToMoveBetweenTiles);
+				var dx = colChange * this._moveFrame / this._framesUntilMovementComplete;
 				return (this._prevTile.col + 0.5 + dx) * Global.TILE_WIDTH;
 			}
 			else {
@@ -140,7 +181,7 @@ define([
 			}
 			else if(this._moveFrame !== null) {
 				var rowChange = this._nextTile.row - this._prevTile.row;
-				var dy = rowChange * (1 - this._moveFrame / this._framesToMoveBetweenTiles);
+				var dy = rowChange * this._moveFrame / this._framesUntilMovementComplete;
 				return (this._prevTile.row + 0.5 + dy) * Global.TILE_HEIGHT;
 			}
 			else {

@@ -5,7 +5,7 @@ define([
 ) {
 	function Box() {
 		SUPERCLASS.call(this, {
-			moveSpeed: 2,
+			pushWeight: 2,
 			width: 20,
 			height: 20,
 			facingMatters: false,

@@ -3,12 +3,15 @@ define([
 ], function(
 	Global
 ) {
-	function Tile(col, row) {
-		this.col = col;
-		this.row = row;
+	function Tile() {
 		this._occupants = [];
 		this._reservedFor = [];
 	}
+	Tile.prototype.addToTileGrid = function(tileGrid, col, row) {
+		this._tileGrid = tileGrid;
+		this.col = col;
+		this.row = row;
+	};
 	Tile.prototype.reserveForOccupant = function(occupant) {
 		this._reservedFor.push(occupant);
 	};
@@ -34,6 +37,31 @@ define([
 		return (occupant && !occupant.occupiesFullTile) ||
 			(this._occupants.every(doesNotOccupyFullTile) &&
 			this._reservedFor.every(doesNotOccupyFullTile));
+	};
+	Tile.prototype.canPushInto = function(pusher, dx, dy) {
+		var tile = this._tileGrid.get(this.col + dx, this.row + dy);
+		return tile && this._occupants.every(function(occupant) {
+				return (occupant.pushWeight > 0 && tile.hasRoomFor(occupant)) ||
+					(!occupant.occupiesFullTile || !pusher.occupiesFullTile);
+			}) && this._reservedFor.every(doesNotOccupyFullTile);
+	};
+	Tile.prototype.pushOccupants = function(pusher, dx, dy) {
+		//calculate push speed
+		var pushWeight = 0;
+		for(var i = 0; i < this._occupants.length; i++) {
+			if(this._occupants[i].pushWeight > 0) {
+				pushWeight += this._occupants[i].pushWeight;
+			}
+		}
+		var pushSpeed = (pusher.pushStrength === 0 || pushWeight === 0 ?
+			null : pusher.pushStrength / pushWeight);
+		//push
+		for(i = 0; i < this._occupants.length; i++) {
+			if(this._occupants[i].pushWeight > 0) {
+				this._occupants[i].getPushed(pushSpeed, dx, dy);
+			}
+		}
+		return pushSpeed;
 	};
 	Tile.prototype.renderOccupants = function(ctx, camera) {
 		for(var i = 0; i < this._occupants.length; i++) {

@@ -6,6 +6,7 @@ define([
 	function Player() {
 		SUPERCLASS.call(this, {
 			moveSpeed: 4,
+			pushStrength: 4,
 			width: 20,
 			height: 30,
 			debugColor: '#0f0',

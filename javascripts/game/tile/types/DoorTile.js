@@ -5,8 +5,8 @@ define([
 	SUPERCLASS,
 	Global
 ) {
-	function DoorTile(col, row, facing) {
-		SUPERCLASS.call(this, col, row);
+	function DoorTile(facing) {
+		SUPERCLASS.call(this);
 		this._facing = facing || 'NORTH';
 	}
 	DoorTile.prototype = Object.create(SUPERCLASS.prototype);
