@@ -9,7 +9,7 @@ define([
 		SUPERCLASS.call(this);
 	}
 	WallTile.prototype = Object.create(SUPERCLASS.prototype);
-	WallTile.prototype.hasRoomFor = function(occupant) {
+	WallTile.prototype.canEnter = function(occupant, dx, dy) {
 		return false;
 	};
 	WallTile.prototype.canPushInto = function(pusher, dx, dy) {

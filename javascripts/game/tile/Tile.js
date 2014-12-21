@@ -33,16 +33,26 @@ define([
 		this.onLeave(occupant);
 		occupant.onLeave(this);
 	};
-	Tile.prototype.hasRoomFor = function(occupant) {
-		return (occupant && !occupant.occupiesFullTile) ||
+	Tile.prototype.canEnter = function(actor, dx, dy) {
+		return ((actor && !actor.occupiesFullTile) ||
 			(this._occupants.every(doesNotOccupyFullTile) &&
-			this._reservedFor.every(doesNotOccupyFullTile));
+			this._reservedFor.every(doesNotOccupyFullTile))) &&
+			this._occupants.every(function(occupant) {
+				return occupant.sameAs(actor) || occupant.canEnter(actor, dx, dy);
+			});
+	};
+	Tile.prototype.canLeave = function(actor, dx, dy) {
+		return this._occupants.every(function(occupant) {
+			return occupant.sameAs(actor) || occupant.canLeave(actor, dx, dy);
+		});
 	};
 	Tile.prototype.canPushInto = function(pusher, dx, dy) {
 		var tile = this._tileGrid.get(this.col + dx, this.row + dy);
-		return tile && this._occupants.every(function(occupant) {
-				return (occupant.pushWeight > 0 && tile.hasRoomFor(occupant)) ||
-					(!occupant.occupiesFullTile || !pusher.occupiesFullTile);
+		return tile &&
+			this._occupants.every(function(occupant) {
+				return ((occupant.pushWeight > 0 && tile.canEnter(occupant, dx, dy)) ||
+					(!occupant.occupiesFullTile || !pusher.occupiesFullTile)) &&
+					(occupant.sameAs(pusher) || occupant.canEnter(pusher, dx, dy));
 			}) && this._reservedFor.every(doesNotOccupyFullTile);
 	};
 	Tile.prototype.pushOccupants = function(pusher, dx, dy) {

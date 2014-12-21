@@ -63,8 +63,8 @@ define([
 		if(this._moveFrame === null) {
 			this._facing = dir;
 			var nextTile = this._level.tileGrid.get(this.col + dx, this.row + dy);
-			if(nextTile) {
-				if(nextTile.hasRoomFor(this)) {
+			if(nextTile && this._tile.canLeave(this, dx, dy)) {
+				if(nextTile.canEnter(this, dx, dy)) {
 					this.isHalfwayToNextTile = false;
 					this._nextTile = nextTile;
 					this._moveFrame = 0;
@@ -98,7 +98,8 @@ define([
 			this._facing = dir;
 			var nextTile = this._level.tileGrid.get(this.col + dx, this.row + dy);
 			if(nextTile) {
-				if(nextTile.hasRoomFor(this)) {
+				if(nextTile.canEnter(this, dx, dy) && this._tile.canLeave(this, dx, dy)) {
+					this.isHalfwayToNextTile = false;
 					this._nextTile = nextTile;
 					this._moveFrame = 0;
 					this._framesUntilMovementComplete = Global.TARGET_FRAMERATE / pushSpeed;
@@ -109,6 +110,12 @@ define([
 			}
 		}
 		return false;
+	};
+	Actor.prototype.canEnter = function(actor, dx, dy) {
+		return true;
+	};
+	Actor.prototype.canLeave = function(actor, dx, dy) {
+		return true;
 	};
 	Actor.prototype.isMoving = function() {
 		return this._moveFrame !== null;
