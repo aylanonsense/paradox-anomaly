@@ -6,6 +6,7 @@ define([
 	'game/levels/TestLevel/Box',
 	'game/levels/TestLevel/FloorSwitch',
 	'game/levels/TestLevel/Door',
+	'game/levels/TestLevel/Key',
 	'game/tile/types/FloorTile',
 	'game/tile/types/WallTile'
 ], function(
@@ -16,6 +17,7 @@ define([
 	Box,
 	FloorSwitch,
 	Door,
+	Key,
 	FloorTile,
 	WallTile
 ) {
@@ -34,9 +36,9 @@ define([
 		this.tileGrid.add(new WallTile(), 2, 3);
 		this.tileGrid.add(new WallTile(), 8, 2);
 		this.camera.x = -Global.CANVAS_WIDTH / 2 + Global.TILE_WIDTH / 2 *
-				(this.tileGrid.getMaxCol() - this.tileGrid.getMinCol());
+				(this.tileGrid.getMaxCol() - this.tileGrid.getMinCol() + 1);
 		this.camera.y = -Global.CANVAS_HEIGHT / 2 + Global.TILE_HEIGHT / 2 *
-				(this.tileGrid.getMaxRow() - this.tileGrid.getMinRow());
+				(this.tileGrid.getMaxRow() - this.tileGrid.getMinRow() + 1);
 		this.spawnActor(new Robot(), this.tileGrid.get(1, 1));
 		this.spawnActor(new Box(), this.tileGrid.get(2, 1));
 		this.spawnActor(new FloorSwitch(), this.tileGrid.get(5, 1));
@@ -44,6 +46,7 @@ define([
 		this.spawnActor(new Door('EAST'), this.tileGrid.get(5, 3));
 		this.spawnActor(new Door('SOUTH'), this.tileGrid.get(6, 3));
 		this.spawnActor(new Door('WEST'), this.tileGrid.get(4, 7));
+		this.spawnActor(new Key(), this.tileGrid.get(3, 1));
 		this.player = this.spawnActor(new Player(), this.tileGrid.get(3, 4));
 	}
 	Level.prototype = Object.create(SUPERCLASS.prototype);

@@ -7,6 +7,7 @@ define([
 		SUPERCLASS.call(this, {
 			moveSpeed: 4,
 			pushStrength: 4,
+			canCarry: true,
 			width: 20,
 			height: 30,
 			debugColor: '#0f0',
@@ -27,6 +28,12 @@ define([
 			else if(this._moveDir) {
 				this.move(this._moveDir);
 			}
+		}
+	};
+	Player.prototype.render = function(ctx, camera) {
+		SUPERCLASS.prototype.render.call(this, ctx, camera);
+		if(this._carrying) {
+			this._carrying.render(ctx, camera);
 		}
 	};
 	Player.prototype.onKeyboardEvent = function(evt, keyboard) {

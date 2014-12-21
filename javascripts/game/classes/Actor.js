@@ -27,6 +27,11 @@ define([
 		this._debugColor = params.debugColor || '#0a0';
 		this._debugFillColor = params.debugFillColor || null;
 		this.isHalfwayToNextTile = false;
+		this.canCarry = params.canCarry || false;
+		this.canBeCarried = params.canBeCarried || false;
+		this._carrying = null;
+		this._carriedBy = null;
+		this.carryRenderOffset = { x: 0, y: 0 };
 	}
 	Actor.prototype.tick = function() {
 		if(this._moveFrame !== null) {
@@ -128,41 +133,70 @@ define([
 	};
 	Actor.prototype.startOfFrame = function() {};
 	Actor.prototype.endOfFrame = function() {};
-	Actor.prototype.onEnter = function(tile) {};
+	Actor.prototype.onEnter = function(tile) {
+		if(this.canCarry && !this._carrying) {
+			var occupants = tile.getOccupants();
+			for(var i = 0; i < occupants.length; i++) {
+				if(!occupants[i].sameAs(this) && occupants[i].canBeCarried) {
+					this.carry(occupants[i]);
+					occupants[i].getCarriedBy(this);
+					break;
+				}
+			}
+		}
+	};
+	Actor.prototype.carry = function(actor) {
+		this._carrying = actor;
+	};
+	Actor.prototype.getCarriedBy = function(actor) {
+		this._carriedBy = actor;
+		if(this._tile) {
+			this._tile.removeOccupant(this);
+			this._tile = null;
+		}
+	};
+	Actor.prototype.isBeingCarried = function() {
+		return this._carriedBy !== null;
+	};
+	Actor.prototype.isCarrying = function() {
+		return this._carrying !== null;
+	};
 	Actor.prototype.onLeave = function(tile) {};
 	Actor.prototype.render = function(ctx, camera) {
 		if(Global.DEBUG_DRAW_ACTOR_BORDERS) {
+			var x = (this._carriedBy ? this._carriedBy.x + this._carriedBy.carryRenderOffset.x : this.x);
+			var y = (this._carriedBy ? this._carriedBy.y + this._carriedBy.carryRenderOffset.y : this.y);
 			var perceivedDepth = this.depth * Global.DEBUG_DEPTH_MULT;
 			var perceivedHeight = this.height * Global.DEBUG_HEIGHT_MULT;
 			if(this._debugFillColor) {
 				ctx.fillStyle = this._debugFillColor;
-				ctx.fillRect(this.x - camera.x - this.width / 2,
-					this.y - camera.y - perceivedHeight - perceivedDepth / 2,
+				ctx.fillRect(x - camera.x - this.width / 2,
+					y - camera.y - perceivedHeight - perceivedDepth / 2,
 					this.width, perceivedHeight + perceivedDepth);
 			}
 			ctx.strokeStyle = this._debugColor;
 			ctx.lineWidth = 2;
-			ctx.strokeRect(this.x - camera.x - this.width / 2,
-				this.y - camera.y - perceivedDepth / 2 - perceivedHeight,
+			ctx.strokeRect(x - camera.x - this.width / 2,
+				y - camera.y - perceivedDepth / 2 - perceivedHeight,
 				this.width, perceivedDepth);
-			ctx.strokeRect(this.x - camera.x - this.width / 2,
-				this.y - camera.y - perceivedHeight - perceivedDepth / 2,
+			ctx.strokeRect(x - camera.x - this.width / 2,
+				y - camera.y - perceivedHeight - perceivedDepth / 2,
 				this.width, perceivedHeight + perceivedDepth);
 			ctx.lineWidth = 1;
-			ctx.strokeRect(this.x - camera.x - this.width / 2,
-				this.y - camera.y - perceivedDepth / 2,
+			ctx.strokeRect(x - camera.x - this.width / 2,
+				y - camera.y - perceivedDepth / 2,
 				this.width, perceivedDepth);
 			ctx.lineWidth = 4;
 			if(this._facingMatters) {
 				ctx.beginPath();
-				ctx.moveTo(this.x - camera.x, this.y - camera.y - perceivedHeight);
+				ctx.moveTo(x - camera.x, y - camera.y - perceivedHeight);
 				var dx = 0, dy = 0;
 				if(this._facing === 'NORTH') { dy = -1; }
 				else if(this._facing === 'EAST') { dx = 1; }
 				else if(this._facing === 'SOUTH') { dy = 1; }
 				else if(this._facing === 'WEST') { dx = -1; }
-				ctx.lineTo(this.x - camera.x + dx * this.width / 2,
-					this.y - camera.y - perceivedHeight + dy * perceivedDepth / 2);
+				ctx.lineTo(x - camera.x + dx * this.width / 2,
+					y - camera.y - perceivedHeight + dy * perceivedDepth / 2);
 				ctx.stroke();
 			}
 		}

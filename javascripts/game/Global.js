@@ -11,13 +11,6 @@ define({
 		38: 'MOVE_UP', //up arrow key
 		40: 'MOVE_DOWN' //down arrow key
 	},
-	RENDER_LAYERS: [
-		'FAR_BACKGROUND', //on top of the background image/color
-		'BACKGROUND', //on top of the background tile grid, beneath the tile grid
-		'STAGE', //on top of the tile grid
-		'FOREGROUND', //on top of stage actors
-		'FAR_FOREGROUND' //on top of the HUD
-	],
 
 	//debug variables
 	DEBUG_FRAMERATE: null,

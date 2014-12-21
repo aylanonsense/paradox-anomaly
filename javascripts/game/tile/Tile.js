@@ -7,6 +7,9 @@ define([
 		this._occupants = [];
 		this._reservedFor = [];
 	}
+	Tile.prototype.getOccupants = function() {
+		return this._occupants;
+	};
 	Tile.prototype.addToTileGrid = function(tileGrid, col, row) {
 		this._tileGrid = tileGrid;
 		this.col = col;
@@ -77,7 +80,7 @@ define([
 		for(var i = 0; i < this._occupants.length; i++) {
 			var o = this._occupants[i];
 			if(!(o.isMoving() && ((o.getFacing() === 'SOUTH' && !o.isHalfwayToNextTile) ||
-					(o.getFacing() === 'NORTH' && o.isHalfwayToNextTile)))) {
+					(o.getFacing() === 'NORTH' && o.isHalfwayToNextTile))) &&!o.isBeingCarried()) {
 				o.render(ctx, camera);
 			}
 		}
@@ -86,7 +89,7 @@ define([
 		for(var i = 0; i < this._occupants.length; i++) {
 			var o = this._occupants[i];
 			if(o.isMoving() && ((o.getFacing() === 'SOUTH' && !o.isHalfwayToNextTile) ||
-					(o.getFacing() === 'NORTH' && o.isHalfwayToNextTile))) {
+					(o.getFacing() === 'NORTH' && o.isHalfwayToNextTile)) &&!o.isBeingCarried()) {
 				o.render(ctx, camera);
 			}
 		}
