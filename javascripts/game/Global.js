@@ -9,7 +9,9 @@ define({
 		37: 'MOVE_LEFT', //left arrow key
 		39: 'MOVE_RIGHT', //right arrow key
 		38: 'MOVE_UP', //up arrow key
-		40: 'MOVE_DOWN' //down arrow key
+		40: 'MOVE_DOWN', //down arrow key
+		90: 'USE', //z key
+		16: 'STAND_STILL' //shift key
 	},
 
 	//debug variables

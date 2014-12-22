@@ -155,11 +155,31 @@ define([
 			this._tile = null;
 		}
 	};
+	Actor.prototype.getDropped = function(tile) {
+		this._carriedBy = null;
+		this._tile = tile;
+		this._tile.addOccupant(this);
+	};
 	Actor.prototype.isBeingCarried = function() {
 		return this._carriedBy !== null;
 	};
 	Actor.prototype.isCarrying = function() {
 		return this._carrying !== null;
+	};
+	Actor.prototype.dropCarried = function() {
+		if(this._carrying) {
+			var vector = Utils.toVector(this._facing);
+			var dx = vector.x;
+			var dy = vector.y;
+			var dropTile = this._level.tileGrid.get(this.col + dx, this.row + dy);
+			if(dropTile && dropTile.canEnter(this._carrying, dx, dy) &&
+					this._tile.canLeave(this._carrying, dx, dy)) {
+				this._carrying.getDropped(dropTile);
+				this._carrying = null;
+				return true;
+			}
+		}
+		return false;
 	};
 	Actor.prototype.onLeave = function(tile) {};
 	Actor.prototype.render = function(ctx, camera) {
