@@ -50,10 +50,12 @@ define([
 		});
 	};
 	Tile.prototype.canPushInto = function(pusher, dx, dy) {
+		var self = this;
 		var tile = this._tileGrid.get(this.col + dx, this.row + dy);
 		return tile &&
 			this._occupants.every(function(occupant) {
-				return ((occupant.pushWeight > 0 && tile.canEnter(occupant, dx, dy)) ||
+				return ((occupant.pushWeight > 0 && tile.canEnter(occupant, dx, dy) &&
+					self.canLeave(occupant, dx, dy)) ||
 					(!occupant.occupiesFullTile || !pusher.occupiesFullTile)) &&
 					(occupant.sameAs(pusher) || occupant.canEnter(pusher, dx, dy));
 			}) && this._reservedFor.every(doesNotOccupyFullTile);
