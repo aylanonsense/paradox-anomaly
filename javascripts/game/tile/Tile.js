@@ -1,7 +1,9 @@
 define([
-	'game/Global'
+	'game/Global',
+	'game/Utils'
 ], function(
-	Global
+	Global,
+	Utils
 ) {
 	function Tile() {
 		this._occupants = [];
@@ -77,6 +79,24 @@ define([
 			}
 		}
 		return pushSpeed;
+	};
+	Tile.prototype.onUsed = function(actor) {
+		for(var i = 0; i < this._occupants.length; i++) {
+			if(this._occupants[i].onUsed(actor, true)) {
+				return true;
+			}
+		}
+		var vector = Utils.toVector(actor.getFacing());
+		var nextTile = this._tileGrid.get(this.col + vector.x, this.row + vector.y);
+		if(this.canLeave(actor, vector.dx, vector.dy)) {
+			var occupants = nextTile.getOccupants();
+			for(i = 0; i < occupants.length; i++) {
+				if(occupants[i].onUsed(actor, false)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	};
 	Tile.prototype.renderOccupants = function(ctx, camera) {
 		for(var i = 0; i < this._occupants.length; i++) {

@@ -1,7 +1,9 @@
 define([
-	'game/classes/Actor'
+	'game/classes/Actor',
+	'game/Utils'
 ], function(
-	SUPERCLASS
+	SUPERCLASS,
+	Utils
 ) {
 	function Player() {
 		SUPERCLASS.call(this, {
@@ -67,8 +69,12 @@ define([
 			else { this._moveDir = null; }
 		}
 		else if(evt.gameKey === 'USE' && evt.isDown) {
-			if(this.isCarrying()) {
+			if(this._tile.onUsed(this)) {
+				return;
+			}
+			else if(this.isCarrying()) {
 				this.dropCarried();
+				return;
 			}
 		}
 	};

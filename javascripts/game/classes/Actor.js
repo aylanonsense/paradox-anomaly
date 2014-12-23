@@ -32,6 +32,9 @@ define([
 		this._carrying = null;
 		this._carriedBy = null;
 		this.carryRenderOffset = { x: 0, y: 0 };
+		this._powered = false;
+		this._onPowerChangedCallbacks = [];
+		this._isKilled = false;
 	}
 	Actor.prototype.tick = function() {
 		if(this._moveFrame !== null) {
@@ -128,8 +131,11 @@ define([
 	Actor.prototype.getFacing = function() {
 		return this._facing;
 	};
+	Actor.prototype.kill = function() {
+		this._isKilled = true;
+	};
 	Actor.prototype.isAlive = function() {
-		return true;
+		return !this._isKilled;
 	};
 	Actor.prototype.startOfFrame = function() {};
 	Actor.prototype.endOfFrame = function() {};
@@ -182,6 +188,27 @@ define([
 		return false;
 	};
 	Actor.prototype.onLeave = function(tile) {};
+	Actor.prototype.onUsed = function(actor, isInSameTile) {
+		return false;
+	};
+	Actor.prototype.togglePower = function(onOrOff) {
+		var i;
+		if(typeof onOrOff === 'undefined') {
+			this._powered = !this._powered;
+			for(i = 0; i < this._onPowerChangedCallbacks.length; i++) {
+				this._onPowerChangedCallbacks[i].call(this, this._powered);
+			}
+		}
+		else if(this._powered !== onOrOff) {
+			this._powered = onOrOff;
+			for(i = 0; i < this._onPowerChangedCallbacks.length; i++) {
+				this._onPowerChangedCallbacks[i].call(this, this._powered);
+			}
+		}
+	};
+	Actor.prototype.onPowerChanged = function(callback) {
+		this._onPowerChangedCallbacks.push(callback);
+	};
 	Actor.prototype.render = function(ctx, camera) {
 		if(Global.DEBUG_DRAW_ACTOR_BORDERS) {
 			var x = (this._carriedBy ? this._carriedBy.x + this._carriedBy.carryRenderOffset.x : this.x);

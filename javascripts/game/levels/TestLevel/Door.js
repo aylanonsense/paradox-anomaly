@@ -22,10 +22,15 @@ define([
 	}
 	Door.prototype = Object.create(SUPERCLASS.prototype);
 	Door.prototype.canEnter	= function(actor, dx, dy) {
-		return dx !== -this._vector.x || dy !== -this._vector.y;
+		return this._powered || (dx !== -this._vector.x || dy !== -this._vector.y);
 	};
 	Door.prototype.canLeave	= function(actor, dx, dy) {
-		return dx !== this._vector.x || dy !== this._vector.y;
+		return this._powered || (dx !== this._vector.x || dy !== this._vector.y);
+	};
+	Door.prototype.render = function(ctx, camera) {
+		if(!this._powered) {
+			SUPERCLASS.prototype.render.call(this, ctx, camera);
+		}
 	};
 	return Door;
 });

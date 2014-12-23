@@ -5,6 +5,7 @@ define([
 	'game/levels/TestLevel/Robot',
 	'game/levels/TestLevel/Box',
 	'game/levels/TestLevel/FloorSwitch',
+	'game/levels/TestLevel/WallSwitch',
 	'game/levels/TestLevel/Door',
 	'game/levels/TestLevel/Key',
 	'game/tile/types/FloorTile',
@@ -16,6 +17,7 @@ define([
 	Robot,
 	Box,
 	FloorSwitch,
+	WallSwitch,
 	Door,
 	Key,
 	FloorTile,
@@ -45,10 +47,14 @@ define([
 		this.spawnActor(new Door('NORTH'), this.tileGrid.get(4, 3));
 		this.spawnActor(new Door('EAST'), this.tileGrid.get(5, 3));
 		this.spawnActor(new Door('SOUTH'), this.tileGrid.get(6, 3));
-		this.spawnActor(new Door('WEST'), this.tileGrid.get(4, 7));
+		var door = this.spawnActor(new Door('WEST'), this.tileGrid.get(4, 7));
 		this.spawnActor(new Key(), this.tileGrid.get(3, 1));
+		var wallSwitch = this.spawnActor(new WallSwitch('WEST'), this.tileGrid.get(3, 5));
+		wallSwitch.onPowerChanged(function(isPowered) {
+			door.togglePower(isPowered);
+		});
 		this.player = this.spawnActor(new Player(), this.tileGrid.get(3, 4));
 	}
-	Level.prototype = Object.create(SUPERCLASS.prototype);
+Level.prototype = Object.create(SUPERCLASS.prototype);
 	return Level;
 });
