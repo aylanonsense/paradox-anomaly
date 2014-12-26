@@ -28,6 +28,14 @@ define([
 		}
 		return true;
 	};
+	Tile.prototype.canLeave = function(occupant, moveX, moveY) {
+		for(var i = 0; i < this._occupants.length; i++) {
+			if(!this._occupants[i].canLeave(occupant, moveX, moveY)) {
+				return false;
+			}
+		}
+		return true;
+	};
 	Tile.prototype.use = function(obj, dir, isDistant) {
 		for(var i = 0; i < this._occupants.length; i++) {
 			if(this._occupants[i].use(obj, dir, isDistant)) {

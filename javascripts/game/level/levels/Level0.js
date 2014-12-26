@@ -71,6 +71,9 @@ define([
 		this.spawnGameObj(new WallSwitch({ dir: 'SOUTH' }), 4, 4).onTriggered(function() {
 			door.toggleLocked();
 		});
+		this.spawnGameObj(new WallSwitch({ dir: 'NORTH' }), 7, 7).onTriggered(function() {
+			door.toggleLocked();
+		});
 		this.spawnGameObj(new SimultaneousWallSwitch({ dir: 'WEST' }), 1, 5);
 		this.spawnGameObj(new SimultaneousWallSwitch({ dir: 'WEST' }), 1, 7);
 		this.spawnGameObj(new Crate(), 2, 1);

@@ -31,7 +31,7 @@ define([
 	};
 	MovableGameObj.prototype.move = function(moveX, moveY, speed) {
 		speed = speed || this._defaultSpeed;
-		if(!this.isPerformingAction()) {
+		if(!this.isPerformingAction() && this._tile.canLeave(this, moveX, moveY)) {
 			this._nextTile = this._level.tileGrid.get(this.col + moveX, this.row + moveY);
 			if(this._nextTile && this._nextTile.canEnter(this, moveX, moveY)) {
 				this._moveX = moveX;

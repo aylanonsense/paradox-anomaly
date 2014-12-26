@@ -41,6 +41,13 @@ define([
 		}
 		return SUPERCLASS.prototype.canEnter.call(this, obj, moveX, moveY);
 	};
+	Door.prototype.canLeave = function(obj, moveX, moveY) {
+		var dir = toDirection(moveX, moveY);
+		if(this.isLocked() && dir === this._dir) {
+			return false;
+		}
+		return SUPERCLASS.prototype.canLeave.call(this, obj, moveX, moveY);
+	};
 	Door.prototype.render = function(ctx, camera) {
 		if(this.isLocked()) {
 			ctx.fillStyle = this._debugColor;

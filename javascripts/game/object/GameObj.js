@@ -33,6 +33,9 @@ define([
 	GameObj.prototype.canEnter = function(obj, moveX, moveY) {
 		return !this.fillsTile || !obj.fillsTile;
 	};
+	GameObj.prototype.canLeave = function(obj, moveX, moveY) {
+		return true;
+	};
 
 	//define useful getters/setters
 	GameObj.prototype._getX = function() {
