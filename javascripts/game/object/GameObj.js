@@ -26,7 +26,9 @@ define([
 	GameObj.prototype.startOfFrame = function() {};
 	GameObj.prototype.tick = function() {};
 	GameObj.prototype.endOfFrame = function() {};
-	GameObj.prototype.use = function(obj, dir, isDistant) {};
+	GameObj.prototype.use = function(obj, dir, isDistant) {
+		return false;
+	};
 	GameObj.prototype.render = function(ctx, camera) {};
 	GameObj.prototype.isAlive = function(isAlive) {
 		return true;

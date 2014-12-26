@@ -61,18 +61,20 @@ define([
 		//create game objects
 		this.player = this.spawnGameObj(new Player(), 1, 2);
 		var key = this.spawnGameObj(new Key(), 1, 0);
-		this.spawnGameObj(new IDCard(), 2, 0);
+		var card = this.spawnGameObj(new IDCard(), 2, 0);
 		this.spawnGameObj(new PastSelf(), 3, 2);
 		this.spawnGameObj(new Guard(), 5, 2);
 		this.spawnGameObj(new LockedDoor({ dir: 'WEST', key: key }), 4, 7);
-		var door = this.spawnGameObj(new SecurityDoor({ dir: 'NORTH' }), 6, 6);
-		this.spawnGameObj(new BarredDoor({ dir: 'NORTH' }), 8, 6);
-		this.spawnGameObj(new IDCardScanner({ dir: 'EAST' }), 7, 2);
+		var securityDoor = this.spawnGameObj(new SecurityDoor({ dir: 'NORTH' }), 6, 6);
+		var lockedDoor = this.spawnGameObj(new BarredDoor({ dir: 'NORTH' }), 8, 6);
+		this.spawnGameObj(new IDCardScanner({ dir: 'EAST', card: card }), 7, 2).onTriggered(function() {
+			securityDoor.toggleLocked();
+		});
 		this.spawnGameObj(new WallSwitch({ dir: 'SOUTH' }), 4, 4).onTriggered(function() {
-			door.toggleLocked();
+			lockedDoor.toggleLocked();
 		});
 		this.spawnGameObj(new WallSwitch({ dir: 'NORTH' }), 7, 7).onTriggered(function() {
-			door.toggleLocked();
+			lockedDoor.toggleLocked();
 		});
 		this.spawnGameObj(new SimultaneousWallSwitch({ dir: 'WEST' }), 1, 5);
 		this.spawnGameObj(new SimultaneousWallSwitch({ dir: 'WEST' }), 1, 7);

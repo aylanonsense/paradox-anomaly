@@ -12,7 +12,9 @@ define([
 	WallSwitch.prototype.use = function(obj, dir, isDistant) {
 		if(!isDistant && dir === this._dir) {
 			this.trigger();
+			return true;
 		}
+		return false;
 	};
 	return WallSwitch;
 });
