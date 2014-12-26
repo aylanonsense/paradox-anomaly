@@ -38,6 +38,20 @@ define([
 		this._carriedItem = item;
 		this._carriedItem.onPickedUp(this);
 	};
+	Actor.prototype.dropCarriedItem = function() {
+		if(this._carriedItem) {
+			var vector = toVector(this._facing);
+			if(this._tile.canLeave(this._carriedItem, vector.x, vector.y)) {
+				var nextTile = this._level.tileGrid.get(this.col + vector.x, this.row + vector.y);
+				if(nextTile && nextTile.canEnter(this._carriedItem, vector.x, vector.y)) {
+					this._carriedItem.onDroppedInto(nextTile, this);
+					this._carriedItem = null;
+					return true;
+				}
+			}
+		}
+		return false;
+	};
 	Actor.prototype.render = function(ctx, camera) {
 		ctx.fillStyle = this._debugColor;
 		ctx.fillRect(this.x - 20 - camera.x, this.y - 20 - camera.y, 40, 40);

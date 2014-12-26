@@ -55,12 +55,16 @@ define([
 			else { this._moveDir = null; }
 		}
 		else if(evt.gameKey === 'USE' && evt.isDown) {
-			if(!this._tile.use(this, this._facing, false)) {
-				var nextTile = this._level.tileGrid.get(this.col + toVector(this._facing).x,
-					this.row + toVector(this._facing).y);
-				if(nextTile) {
-					nextTile.use(this, this._facing, true);
-				}
+			if(this._tile.use(this, this._facing, false)) {
+				return;
+			}
+			var nextTile = this._level.tileGrid.get(this.col + toVector(this._facing).x,
+				this.row + toVector(this._facing).y);
+			if(nextTile && nextTile.use(this, this._facing, true)) {
+				return;
+			}
+			if(this.dropCarriedItem()) {
+				return;
 			}
 		}
 	};

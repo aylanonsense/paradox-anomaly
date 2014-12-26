@@ -12,6 +12,12 @@ define([
 	Item.prototype.onPickedUp = function(obj) {
 		this._carrier = obj;
 	};
+	Item.prototype.onDroppedInto = function(tile, obj) {
+		this._tile.removeOccupant(this);
+		this._tile = tile;
+		this._tile.addOccupant(this);
+		this._carrier = null;
+	};
 	Item.prototype.onEnter = function(obj) {
 		if(!this.isBeingCarried()) {
 			if(obj.canCarryItems && !obj.isCarryingItem()) {
