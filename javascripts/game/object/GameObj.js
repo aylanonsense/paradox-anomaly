@@ -10,6 +10,7 @@ define([
 		this._level = null;
 		this._tile = null;
 		this.fillsTile = (params.fillsTile === true);
+		this.canCarryItems = (params.canCarryItems === true);
 	}
 	GameObj.prototype.addToLevel = function(level, tile) {
 		this._level = level;
@@ -36,6 +37,7 @@ define([
 	GameObj.prototype.canLeave = function(obj, moveX, moveY) {
 		return true;
 	};
+	GameObj.prototype.onEnter = function(obj) {};
 
 	//define useful getters/setters
 	GameObj.prototype._getX = function() {

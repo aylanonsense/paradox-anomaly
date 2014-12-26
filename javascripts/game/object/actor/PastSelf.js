@@ -3,9 +3,13 @@ define([
 ], function(
 	SUPERCLASS
 ) {
-	function Player() {
-		SUPERCLASS.call(this, { debugColor: '#0ff' });
+	function PastSelf() {
+		SUPERCLASS.call(this, {
+			speed: 2,
+			canCarryItems: true,
+			debugColor: '#0ff'
+		});
 	}
-	Player.prototype = Object.create(SUPERCLASS.prototype);
-	return Player;
+	PastSelf.prototype = Object.create(SUPERCLASS.prototype);
+	return PastSelf;
 });

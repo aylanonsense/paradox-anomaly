@@ -60,11 +60,11 @@ define([
 
 		//create game objects
 		this.player = this.spawnGameObj(new Player(), 1, 2);
-		this.spawnGameObj(new Key(), 1, 0);
+		var key = this.spawnGameObj(new Key(), 1, 0);
 		this.spawnGameObj(new IDCard(), 2, 0);
 		this.spawnGameObj(new PastSelf(), 3, 2);
 		this.spawnGameObj(new Guard(), 5, 2);
-		this.spawnGameObj(new LockedDoor({ dir: 'WEST' }), 4, 7);
+		this.spawnGameObj(new LockedDoor({ dir: 'WEST', key: key }), 4, 7);
 		var door = this.spawnGameObj(new SecurityDoor({ dir: 'NORTH' }), 6, 6);
 		this.spawnGameObj(new BarredDoor({ dir: 'NORTH' }), 8, 6);
 		this.spawnGameObj(new IDCardScanner({ dir: 'EAST' }), 7, 2);

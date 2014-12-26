@@ -6,6 +6,7 @@ define([
 	function Guard() {
 		SUPERCLASS.call(this, {
 			speed: 1,
+			canCarryItems: false,
 			debugColor: '#f0f'
 		});
 	}

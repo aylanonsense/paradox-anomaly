@@ -15,6 +15,7 @@ define([
 		}));
 		this._facing = params.facing || 'NORTH';
 		this._debugColor = params.debugColor || '#fff';
+		this._carriedItem = null;
 	}
 	Actor.prototype = Object.create(SUPERCLASS.prototype);
 	Actor.prototype.move = function(moveX, moveY, speed) {
@@ -26,6 +27,16 @@ define([
 			this._facing = toDirection(moveX, moveY);
 		}
 		return false;
+	};
+	Actor.prototype.getCarriedItem = function() {
+		return this._carriedItem;
+	};
+	Actor.prototype.isCarryingItem = function() {
+		return this._carriedItem !== null;
+	};
+	Actor.prototype.pickUpItem = function(item) {
+		this._carriedItem = item;
+		this._carriedItem.onPickedUp(this);
 	};
 	Actor.prototype.render = function(ctx, camera) {
 		ctx.fillStyle = this._debugColor;

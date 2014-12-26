@@ -48,6 +48,9 @@ define([
 		this._reservedFor.push(occupant);
 	};
 	Tile.prototype.addOccupant = function(occupant) {
+		for(var i = 0; i < this._occupants.length; i++) {
+			this._occupants[i].onEnter(occupant);
+		}
 		this._reservedFor = this._reservedFor.filter(function(otherOccupant) {
 			return !otherOccupant.sameAs(occupant);
 		});
