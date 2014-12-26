@@ -45,11 +45,11 @@ define(function() {
 						}
 					}
 				}
-				//render the previous row's occupants that are moving downwards
+				//render (SOME) occupants of previous row
 				if(this._tiles[r - 1]) {
 					for(c = this._tiles[r - 1].minCol; c <= this._tiles[r - 1].maxCol; c++) {
 						if(this._tiles[r - 1][c]) {
-							this._tiles[r - 1][c].renderOccupantsMovingVertically(ctx, camera);
+							this._tiles[r - 1][c].renderPriorityOccupants(ctx, camera);
 						}
 					}
 				}
@@ -64,29 +64,40 @@ define(function() {
 			}
 		}
 	};
-	TileGrid.prototype.getMinCol = function() {
-		var minCol = null;
-		for(var r = this._tiles.minRow; r <= this._tiles.maxRow; r++) {
-			if(this._tiles[r] && (minCol === null || this._tiles[r].minCol < minCol)) {
-				minCol = this._tiles[r].minCol;
+
+	//define useful getters/setters
+	Object.defineProperty(TileGrid.prototype, 'minCol', {
+		get: function() {
+			var minCol = null;
+			for(var r = this._tiles.minRow; r <= this._tiles.maxRow; r++) {
+				if(this._tiles[r] && (minCol === null || this._tiles[r].minCol < minCol)) {
+					minCol = this._tiles[r].minCol;
+				}
 			}
-		}
-		return minCol;
-	};
-	TileGrid.prototype.getMaxCol = function() {
-		var maxCol = null;
-		for(var r = this._tiles.minRow; r <= this._tiles.maxRow; r++) {
-			if(this._tiles[r] && (maxCol === null || this._tiles[r].maxCol > maxCol)) {
-				maxCol = this._tiles[r].maxCol;
+			return minCol;
+		},
+		set: function(x) { throw new Error("Cannot set minCol of TileGrid"); }
+	});
+	Object.defineProperty(TileGrid.prototype, 'maxCol', {
+		get: function() {
+			var maxCol = null;
+			for(var r = this._tiles.minRow; r <= this._tiles.maxRow; r++) {
+				if(this._tiles[r] && (maxCol === null || this._tiles[r].maxCol > maxCol)) {
+					maxCol = this._tiles[r].maxCol;
+				}
 			}
-		}
-		return maxCol;
-	};
-	TileGrid.prototype.getMinRow = function() {
-		return this._tiles.minRow;
-	};
-	TileGrid.prototype.getMaxRow = function() {
-		return this._tiles.maxRow;
-	};
+			return maxCol;
+		},
+		set: function(y) { throw new Error("Cannot set maxCol of TileGrid"); }
+	});
+	Object.defineProperty(TileGrid.prototype, 'minRow', {
+		get: function() { return this._tiles.minRow; },
+		set: function(x) { throw new Error("Cannot set minRow of TileGrid"); }
+	});
+	Object.defineProperty(TileGrid.prototype, 'maxRow', {
+		get: function() { return this._tiles.maxRow; },
+		set: function(y) { throw new Error("Cannot set maxRow of TileGrid"); }
+	});
+
 	return TileGrid;
 });

@@ -1,0 +1,44 @@
+define([
+	'game/object/MovableGameObj',
+	'game/util/extend',
+	'game/util/toVector',
+	'game/util/toDirection'
+], function(
+	SUPERCLASS,
+	extend,
+	toVector,
+	toDirection
+) {
+	function Actor(params) {
+		SUPERCLASS.call(this, extend(params, {
+			fillsTile: true
+		}));
+		this._facing = params.facing || 'NORTH';
+		this._debugColor = params.debugColor || '#fff';
+	}
+	Actor.prototype = Object.create(SUPERCLASS.prototype);
+	Actor.prototype.move = function(moveX, moveY, speed) {
+		if(SUPERCLASS.prototype.move.call(this, moveX, moveY, speed)) {
+			this._facing = toDirection(moveX, moveY);
+			return true;
+		}
+		else if(!this.isMoving()) {
+			this._facing = toDirection(moveX, moveY);
+		}
+		return false;
+	};
+	Actor.prototype.render = function(ctx, camera) {
+		ctx.fillStyle = this._debugColor;
+		ctx.fillRect(this.x - 20 - camera.x, this.y - 20 - camera.y, 40, 40);
+
+		//draw facing
+		var vector = toVector(this._facing);
+		ctx.strokeStyle = '#002';
+		ctx.lineWidth = 3;
+		ctx.beginPath();
+		ctx.moveTo(this.x - camera.x, this.y - camera.y);
+		ctx.lineTo(this.x + 20 * vector.x - camera.x, this.y + 20 * vector.y - camera.y);
+		ctx.stroke();
+	};
+	return Actor;
+});

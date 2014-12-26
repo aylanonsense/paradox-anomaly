@@ -2,8 +2,8 @@ define({
 	TARGET_FRAMERATE: 60, //used for moving actors the correct amount each frame
 	CANVAS_WIDTH: 800,
 	CANVAS_HEIGHT: 600,
-	TILE_WIDTH: 36,
-	TILE_HEIGHT: 24,
+	TILE_WIDTH: 80,
+	TILE_HEIGHT: 60,
 	IMAGE_SMOOTHING: false,
 	KEY_BINDINGS: {
 		37: 'MOVE_LEFT', //left arrow key

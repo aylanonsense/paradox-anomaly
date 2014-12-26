@@ -1,11 +1,9 @@
 define([
-	'game/scene/LevelRunner',
-	'game/levels/TestLevel/Level'
+	'game/level/levels/Level0'
 ], function(
-	LevelRunner,
 	Level
 ) {
-	var scene = new LevelRunner(new Level());
+	var scene = new Level();
 
 	function update() {
 		scene.update();
