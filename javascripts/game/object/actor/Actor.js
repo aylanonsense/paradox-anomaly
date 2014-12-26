@@ -43,7 +43,8 @@ define([
 			var vector = toVector(this._facing);
 			if(this._tile.canLeave(this._carriedItem, vector.x, vector.y)) {
 				var nextTile = this._level.tileGrid.get(this.col + vector.x, this.row + vector.y);
-				if(nextTile && nextTile.canEnter(this._carriedItem, vector.x, vector.y)) {
+				if(nextTile && nextTile.canEnter(this._carriedItem, vector.x, vector.y) &&
+					nextTile.isVirtuallyEmpty()) {
 					this._carriedItem.onDroppedInto(nextTile, this);
 					this._carriedItem = null;
 					return true;

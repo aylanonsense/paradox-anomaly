@@ -36,6 +36,14 @@ define([
 		}
 		return true;
 	};
+	Tile.prototype.isVirtuallyEmpty = function() {
+		for(var i = 0; i < this._occupants.length; i++) {
+			if(this._occupants[i].fillsTile) {
+				return false;
+			}
+		}
+		return true;
+	};
 	Tile.prototype.use = function(obj, dir, isDistant) {
 		for(var i = 0; i < this._occupants.length; i++) {
 			if(this._occupants[i].use(obj, dir, isDistant)) {
