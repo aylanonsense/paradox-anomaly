@@ -38,7 +38,8 @@ define([
 				this._moveY = moveY;
 				this._prevTile = this._tile;
 				this._nextTile.reserveForOccupant(this);
-				this._setCurrentAction('moving', Math.max(2, Math.ceil(Global.TARGET_FRAMERATE / speed)));
+				var frames = Math.max(2, Math.ceil(Global.TARGET_FRAMERATE / speed));
+				this._setCurrentAction('moving', frames);
 				return true;
 			}
 		}

@@ -4,7 +4,10 @@ define([
 	SUPERCLASS
 ) {
 	function Crate() {
-		SUPERCLASS.call(this, { debugColor: '#f70' });
+		SUPERCLASS.call(this, {
+			isPushable: true,
+			debugColor: '#f70'
+		});
 	}
 	Crate.prototype = Object.create(SUPERCLASS.prototype);
 	return Crate;

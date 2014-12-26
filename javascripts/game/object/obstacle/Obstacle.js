@@ -1,5 +1,5 @@
 define([
-	'game/object/GameObj',
+	'game/object/PushableGameObj',
 	'game/util/extend'
 ], function(
 	SUPERCLASS,

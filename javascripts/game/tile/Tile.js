@@ -28,6 +28,31 @@ define([
 		}
 		return true;
 	};
+	Tile.prototype.canPush = function(occupant, moveX, moveY) {
+		for(var i = 0; i < this._occupants.length; i++) {
+			if(this._occupants[i].isPushable) {
+				if(!this._occupants[i].canPush(occupant, moveX, moveY)) {
+					return false;
+				}
+			}
+			else if(!this._occupants[i].canEnter(occupant, moveX, moveY)) {
+				return false;
+			}
+		}
+		for(i = 0; i < this._reservedFor.length; i++) {
+			if(!this._reservedFor[i].canEnter(occupant, moveX, moveY)) {
+				return false;
+			}
+		}
+		return true;
+	};
+	Tile.prototype.pushOccupants = function(occupant, moveX, moveY, speed) {
+		for(var i = 0; i < this._occupants.length; i++) {
+			if(this._occupants[i].isPushable) {
+				this._occupants[i].push(occupant, moveX, moveY, speed);
+			}
+		}
+	};
 	Tile.prototype.canLeave = function(occupant, moveX, moveY) {
 		for(var i = 0; i < this._occupants.length; i++) {
 			if(!this._occupants[i].canLeave(occupant, moveX, moveY)) {

@@ -11,6 +11,7 @@ define([
 		SUPERCLASS.call(this, {
 			speed: 2,
 			canCarryItems: true,
+			canPush: true,
 			debugColor: '#0f0'
 		});
 		this._isStandingStill = false;

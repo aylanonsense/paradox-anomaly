@@ -20,5 +20,8 @@ define([
 	WallTile.prototype.canEnter = function(occupant, moveX, moveY) {
 		return false;
 	};
+	WallTile.prototype.canPush = function(occupant, moveX, moveY) {
+		return false;
+	};
 	return WallTile;
 });

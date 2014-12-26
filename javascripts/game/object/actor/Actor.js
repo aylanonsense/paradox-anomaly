@@ -1,10 +1,12 @@
 define([
 	'game/object/MovableGameObj',
+	'game/Global',
 	'game/util/extend',
 	'game/util/toVector',
 	'game/util/toDirection'
 ], function(
 	SUPERCLASS,
+	Global,
 	extend,
 	toVector,
 	toDirection
@@ -16,14 +18,33 @@ define([
 		this._facing = params.facing || 'NORTH';
 		this._debugColor = params.debugColor || '#fff';
 		this._carriedItem = null;
+		this.canPush = (params.canPush === true);
 	}
 	Actor.prototype = Object.create(SUPERCLASS.prototype);
 	Actor.prototype.move = function(moveX, moveY, speed) {
+		speed = speed || this._defaultSpeed;
 		if(SUPERCLASS.prototype.move.call(this, moveX, moveY, speed)) {
 			this._facing = toDirection(moveX, moveY);
 			return true;
 		}
-		else if(!this.isMoving()) {
+		else if(!this.isPerformingAction() && this._tile.canLeave(this, moveX, moveY)) {
+			this._nextTile = this._level.tileGrid.get(this.col + moveX, this.row + moveY);
+			if(this._nextTile && this._nextTile.canPush(this, moveX, moveY)) {
+				this._moveX = moveX;
+				this._moveY = moveY;
+				this._prevTile = this._tile;
+				this._nextTile.reserveForOccupant(this);
+				speed /= 2.5;
+				var frames = Math.max(2, Math.ceil(Global.TARGET_FRAMERATE / speed));
+				this._setCurrentAction('moving', frames);
+				this._facing = toDirection(moveX, moveY);
+				this._nextTile.pushOccupants(this, moveX, moveY, speed);
+				return true;
+			}
+		}
+
+		//at any rate, adjust the facing to match
+		if(!this.isMoving()) {
 			this._facing = toDirection(moveX, moveY);
 		}
 		return false;

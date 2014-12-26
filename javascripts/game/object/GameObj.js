@@ -11,6 +11,8 @@ define([
 		this._tile = null;
 		this.fillsTile = (params.fillsTile === true);
 		this.canCarryItems = (params.canCarryItems === true);
+		this.isPushable = (params.isPushable === true);
+		this.pushWeight = (params.pushWeight || 0);
 	}
 	GameObj.prototype.addToLevel = function(level, tile) {
 		this._level = level;
