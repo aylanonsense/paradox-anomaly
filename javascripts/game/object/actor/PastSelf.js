@@ -38,12 +38,12 @@ define([
 		this._debugColor = (this._isCorrupt ? '#f00' : '#0ff');
 	};
 	PastSelf.prototype.startOfFrame = function() {
+		SUPERCLASS.prototype.startOfFrame.call(this);
 		for(var i = 0; i < this._actions.length; i++) {
 			if(this._actions[i].frame === this._level.frame) {
 				this._processAction(this._actions[i]);
 			}
 		}
-		SUPERCLASS.prototype.startOfFrame.call(this);
 	};
 	PastSelf.prototype._processAction = function(action) {
 		if(action.action === 'MOVE') {
