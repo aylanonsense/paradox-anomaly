@@ -40,6 +40,7 @@ define([
 	};
 	Player.prototype.move = function(moveX, moveY, speed) {
 		speed = speed || this._defaultSpeed;
+		var facing = this._facing;
 		if(SUPERCLASS.prototype.move.call(this, moveX, moveY, speed)) {
 			if(!this._isPastSelf) {
 				this._actionHistory.push({
@@ -51,6 +52,13 @@ define([
 				});
 			}
 			return true;
+		}
+		if(facing !== this._facing && !this._isPastSelf) {
+			this._actionHistory.push({
+				action: 'TURN',
+				frame: this._level.frame,
+				facing: this._facing
+			});
 		}
 		return false;
 	};
