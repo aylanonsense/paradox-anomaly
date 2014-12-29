@@ -7,6 +7,7 @@ define([
 		SUPERCLASS.call(this, {
 			speed: 2,
 			canCarryItems: true,
+			canPush: true,
 			debugColor: '#0ff'
 		});
 	}

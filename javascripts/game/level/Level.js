@@ -65,7 +65,9 @@ define([
 	Level.prototype.loadState = function(state) {
 		this._frame = state.frame;
 		for(var i = 0; i < this.objects.length; i++) {
-			this.objects[i].loadState(state.objects[this.objects[i].id]);
+			if(state.objects[this.objects[i].id]) {
+				this.objects[i].loadState(state.objects[this.objects[i].id]);
+			}
 		}
 	};
 	Level.prototype.rewindState = function(frames) {
@@ -89,7 +91,10 @@ define([
 	};
 	Level.prototype.onMouseEvent = function(evt) {};
 	Level.prototype.spawnGameObj = function(obj, col, row) {
-		var tile = this.tileGrid.get(col, row);
+		var tile = null;
+		if(typeof col === 'number' && typeof row === 'number') {
+			tile = this.tileGrid.get(col, row);
+		}
 		this.objects.push(obj);
 		obj.addToLevel(this, tile);
 		return obj;

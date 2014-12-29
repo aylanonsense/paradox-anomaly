@@ -1,9 +1,11 @@
 define([
 	'game/object/actor/Actor',
+	'game/object/actor/PastSelf',
 	'game/util/toVector',
 	'game/util/toDirection'
 ], function(
 	SUPERCLASS,
+	PastSelf,
 	toVector,
 	toDirection
 ) {
@@ -19,14 +21,9 @@ define([
 		this._bufferedMoveDir = null;
 	}
 	Player.prototype = Object.create(SUPERCLASS.prototype);
-	Player.prototype.getState = function() {
-		var state = SUPERCLASS.prototype.getState.call(this);
-		//input state variables are preserved across loading state
-		return state;
-	};
 	Player.prototype.loadState = function(state) {
-		SUPERCLASS.prototype.loadState.call(this, state);
-		//input state variables are preserved across loading state
+		var pastSelf = this._level.spawnGameObj(new PastSelf());
+		pastSelf.loadState(state);
 	};
 	Player.prototype.startOfFrame = function() {
 		SUPERCLASS.prototype.startOfFrame.call(this);

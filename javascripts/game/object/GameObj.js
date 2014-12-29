@@ -16,7 +16,9 @@ define([
 	GameObj.prototype.addToLevel = function(level, tile) {
 		this._level = level;
 		this._tile = tile;
-		this._tile.addOccupant(this);
+		if(this._tile) {
+			this._tile.addOccupant(this);
+		}
 	};
 	GameObj.prototype.sameAs = function(other) {
 		return other && other.id == this.id;
@@ -25,7 +27,9 @@ define([
 		return { tile: this._tile };
 	};
 	GameObj.prototype.loadState = function(state) {
-		this._tile.removeOccupant(this, false);
+		if(this._tile) {
+			this._tile.removeOccupant(this, false);
+		}
 		this._tile = state.tile;
 		this._tile.addOccupant(this, false);
 	};
