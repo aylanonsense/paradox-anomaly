@@ -17,12 +17,14 @@ define([
 	};
 	Tile.prototype.canEnter = function(occupant, moveX, moveY) {
 		for(var i = 0; i < this._occupants.length; i++) {
-			if(!this._occupants[i].canEnter(occupant, moveX, moveY)) {
+			if(this._occupants[i].isAlive() &&
+				!this._occupants[i].canEnter(occupant, moveX, moveY)) {
 				return false;
 			}
 		}
 		for(i = 0; i < this._reservedFor.length; i++) {
-			if(!this._reservedFor[i].canEnter(occupant, moveX, moveY)) {
+			if(this._reservedFor[i].isAlive() &&
+				!this._reservedFor[i].canEnter(occupant, moveX, moveY)) {
 				return false;
 			}
 		}
@@ -30,32 +32,37 @@ define([
 	};
 	Tile.prototype.canPush = function(occupant, moveX, moveY) {
 		for(var i = 0; i < this._occupants.length; i++) {
-			if(this._occupants[i].isPushable) {
-				if(!this._occupants[i].canPush(occupant, moveX, moveY)) {
+			if(this._occupants[i].isAlive()) {
+				if(this._occupants[i].isPushable) {
+					if(!this._occupants[i].canPush(occupant, moveX, moveY)) {
+						return false;
+					}
+				}
+				else if(!this._occupants[i].canEnter(occupant, moveX, moveY)) {
 					return false;
 				}
 			}
-			else if(!this._occupants[i].canEnter(occupant, moveX, moveY)) {
-				return false;
-			}
 		}
 		for(i = 0; i < this._reservedFor.length; i++) {
-			if(!this._reservedFor[i].canEnter(occupant, moveX, moveY)) {
-				return false;
+			if(this._reservedFor[i].isAlive()) {
+				if(!this._reservedFor[i].canEnter(occupant, moveX, moveY)) {
+					return false;
+				}
 			}
 		}
 		return true;
 	};
 	Tile.prototype.pushOccupants = function(occupant, moveX, moveY, speed) {
 		for(var i = 0; i < this._occupants.length; i++) {
-			if(this._occupants[i].isPushable) {
+			if(this._occupants[i].isAlive() && this._occupants[i].isPushable) {
 				this._occupants[i].push(occupant, moveX, moveY, speed);
 			}
 		}
 	};
 	Tile.prototype.canLeave = function(occupant, moveX, moveY) {
 		for(var i = 0; i < this._occupants.length; i++) {
-			if(!this._occupants[i].canLeave(occupant, moveX, moveY)) {
+			if(this._occupants[i].isAlive() &&
+				!this._occupants[i].canLeave(occupant, moveX, moveY)) {
 				return false;
 			}
 		}
@@ -63,7 +70,7 @@ define([
 	};
 	Tile.prototype.isVirtuallyEmpty = function() {
 		for(var i = 0; i < this._occupants.length; i++) {
-			if(this._occupants[i].fillsTile) {
+			if(this._occupants[i].isAlive() && this._occupants[i].fillsTile) {
 				return false;
 			}
 		}
@@ -71,7 +78,7 @@ define([
 	};
 	Tile.prototype.use = function(obj, dir, isDistant) {
 		for(var i = 0; i < this._occupants.length; i++) {
-			if(this._occupants[i].use(obj, dir, isDistant)) {
+			if(this._occupants[i].isAlive() && this._occupants[i].use(obj, dir, isDistant)) {
 				return true;
 			}
 		}
@@ -81,9 +88,11 @@ define([
 		this._reservedFor.push(occupant);
 	};
 	Tile.prototype.addOccupant = function(occupant, triggerEvents) {
-		if(triggerEvents !== false) {
+		if(occupant.isAlive() && triggerEvents !== false) {
 			for(var i = 0; i < this._occupants.length; i++) {
-				this._occupants[i].onEnter(occupant);
+				if(this._occupants[i].isAlive()) {
+					this._occupants[i].onEnter(occupant);
+				}
 			}
 		}
 		this._reservedFor = this._reservedFor.filter(function(otherOccupant) {
@@ -101,14 +110,14 @@ define([
 	};
 	Tile.prototype.renderOccupants = function(ctx, camera) {
 		for(var i = 0; i < this._occupants.length; i++) {
-			if(!this._occupants[i].renderAboveRowBelow()) {
+			if(this._occupants[i].isAlive() && !this._occupants[i].renderAboveRowBelow()) {
 				this._occupants[i].render(ctx, camera);
 			}
 		}
 	};
 	Tile.prototype.renderPriorityOccupants = function(ctx, camera) {
 		for(var i = 0; i < this._occupants.length; i++) {
-			if(this._occupants[i].renderAboveRowBelow()) {
+			if(this._occupants[i].isAlive() && this._occupants[i].renderAboveRowBelow()) {
 				this._occupants[i].render(ctx, camera);
 			}
 		}

@@ -13,9 +13,10 @@ define([
 	}
 	LockedDoor.prototype = Object.create(SUPERCLASS.prototype);
 	LockedDoor.prototype.use = function(obj, dir, isDistant) {
-		if(this.isLocked() && obj.canCarryItems && obj.isCarryingItem() &&
-			obj.getCarriedItem().sameAs(this._key) &&
-			((!isDistant && dir === this._dir) || (isDistant && toOppositeDirection(dir) === this._dir))) {
+		if(this.isAlive() && obj.isAlive() && this.isLocked() && obj.canCarryItems &&
+			obj.isCarryingItem() && obj.getCarriedItem().sameAs(this._key) &&
+			((!isDistant && dir === this._dir) ||
+			(isDistant && toOppositeDirection(dir) === this._dir))) {
 			this.unlock();
 			return true;
 		}

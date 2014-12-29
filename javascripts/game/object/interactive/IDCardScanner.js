@@ -11,8 +11,8 @@ define([
 	}
 	IDCardScanner.prototype = Object.create(SUPERCLASS.prototype);
 	IDCardScanner.prototype.use = function(obj, dir, isDistant) {
-		if(obj.canCarryItems && obj.isCarryingItem() && obj.getCarriedItem().sameAs(this._card) &&
-			!isDistant && dir === this._dir) {
+		if(this.isAlive() && obj.isAlive() && obj.canCarryItems && obj.isCarryingItem() &&
+			obj.getCarriedItem().sameAs(this._card) && !isDistant && dir === this._dir) {
 			this.trigger();
 			return true;
 		}

@@ -19,14 +19,44 @@ define([
 		this._isStandingStill = false;
 		this._moveDir = null;
 		this._bufferedMoveDir = null;
+		this._actionHistory = [];
 	}
 	Player.prototype = Object.create(SUPERCLASS.prototype);
-	Player.prototype.loadState = function(state) {
-		var pastSelf = this._level.spawnGameObj(new PastSelf());
-		pastSelf.loadState(state);
+	Player.prototype.addToLevel = function(level, tile) {
+		SUPERCLASS.prototype.addToLevel.call(this, level, tile);
+		this._actionHistory.push({
+			action: 'SPAWN',
+			frame: this._level.frame
+		});
 	};
-	Player.prototype.startOfFrame = function() {
-		SUPERCLASS.prototype.startOfFrame.call(this);
+	Player.prototype.loadState = function(state, prevFrame) {
+		this._actionHistory.push({
+			action: 'DESPAWN',
+			frame: prevFrame
+		});
+		var pastSelf = this._level.spawnGameObj(new PastSelf({
+			actions: this._actionHistory
+		}));
+		pastSelf.loadState(state, prevFrame);
+		this._actionHistory = [{
+			action: 'SPAWN',
+			frame: this._level.frame
+		}];
+	};
+	Player.prototype.move = function(moveX, moveY, speed) {
+		speed = speed || this._defaultSpeed;
+		if(SUPERCLASS.prototype.move.call(this, moveX, moveY, speed)) {
+			this._actionHistory.push({
+				action: 'MOVE',
+				frame: this._level.frame,
+				moveX: moveX,
+				moveY: moveY,
+				speed: speed
+			});
+		}
+	};
+	Player.prototype.startOfFrame = function(frame) {
+		SUPERCLASS.prototype.startOfFrame.call(this, frame);
 		if(!this.isMoving()) {
 			if(this._isStandingStill) {
 				if(this._moveDir) {
@@ -43,7 +73,8 @@ define([
 		}
 	};
 	Player.prototype.onKeyboardEvent = function(evt, keyboard) {
-		var dir = { MOVE_UP: 'NORTH', MOVE_DOWN: 'SOUTH', MOVE_LEFT: 'WEST', MOVE_RIGHT: 'EAST' }[evt.gameKey];
+		var dir = { MOVE_UP: 'NORTH', MOVE_DOWN: 'SOUTH',
+				MOVE_LEFT: 'WEST', MOVE_RIGHT: 'EAST' }[evt.gameKey];
 		this._isStandingStill = keyboard.STAND_STILL;
 		if(evt.gameKey === 'STAND_STILL' && evt.isDown) {
 			this._bufferedMoveDir = null;
@@ -75,7 +106,7 @@ define([
 			}
 		}
 		else if(evt.gameKey === 'TIME_TRAVEL' && evt.isDown) {
-			this._level.rewindState(120);
+			this._level.rewindState(5 * 60);
 		}
 	};
 	return Player;

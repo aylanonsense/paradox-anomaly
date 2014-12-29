@@ -10,7 +10,7 @@ define([
 	}
 	WallSwitch.prototype = Object.create(SUPERCLASS.prototype);
 	WallSwitch.prototype.use = function(obj, dir, isDistant) {
-		if(!isDistant && dir === this._dir) {
+		if(this.isAlive() && obj.isAlive() && !isDistant && dir === this._dir) {
 			this.trigger();
 			return true;
 		}

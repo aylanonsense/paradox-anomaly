@@ -19,8 +19,8 @@ define([
 		state.isLocked = this._isLocked;
 		return state;
 	};
-	Door.prototype.loadState = function(state) {
-		SUPERCLASS.prototype.loadState.call(this, state);
+	Door.prototype.loadState = function(state, prevFrame) {
+		SUPERCLASS.prototype.loadState.call(this, state, prevFrame);
 		this._isLocked = state.isLocked;
 	};
 	Door.prototype.lock = function() {
@@ -44,6 +44,9 @@ define([
 		}
 	};
 	Door.prototype.canEnter = function(obj, moveX, moveY) {
+		if(!this.isAlive() || !obj.isAlive()) {
+			return true;
+		}
 		var dir = toDirection(-moveX, -moveY);
 		if(this.isLocked() && dir === this._dir) {
 			return false;
@@ -51,6 +54,9 @@ define([
 		return SUPERCLASS.prototype.canEnter.call(this, obj, moveX, moveY);
 	};
 	Door.prototype.canLeave = function(obj, moveX, moveY) {
+		if(!this.isAlive() || !obj.isAlive()) {
+			return true;
+		}
 		var dir = toDirection(moveX, moveY);
 		if(this.isLocked() && dir === this._dir) {
 			return false;

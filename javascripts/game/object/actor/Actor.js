@@ -12,9 +12,9 @@ define([
 	toDirection
 ) {
 	function Actor(params) {
-		SUPERCLASS.call(this, extend(params, {
+		SUPERCLASS.call(this, extend({
 			fillsTile: true
-		}));
+		}, params));
 		this._facing = params.facing || 'NORTH';
 		this._debugColor = params.debugColor || '#fff';
 		this._carriedItem = null;
@@ -27,8 +27,8 @@ define([
 		state.carriedItem = this._carriedItem;
 		return state;
 	};
-	Actor.prototype.loadState = function(state) {
-		SUPERCLASS.prototype.loadState.call(this, state);
+	Actor.prototype.loadState = function(state, prevFrame) {
+		SUPERCLASS.prototype.loadState.call(this, state, prevFrame);
 		this._facing = state.facing;
 		this._carriedItem = state.carriedItem;
 	};

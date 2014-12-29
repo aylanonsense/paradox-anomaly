@@ -9,6 +9,7 @@ define([
 		this.id = NEXT_ID++;
 		this._level = null;
 		this._tile = null;
+		this._isDead = false;
 		this.fillsTile = (params.fillsTile === true);
 		this.canCarryItems = (params.canCarryItems === true);
 		this.isPushable = (params.isPushable === true);
@@ -24,14 +25,19 @@ define([
 		return other && other.id == this.id;
 	};
 	GameObj.prototype.getState = function() {
-		return { tile: this._tile };
+		return {
+			frame: this._level.frame,
+			tile: this._tile,
+			isDead: this._isDead
+		};
 	};
-	GameObj.prototype.loadState = function(state) {
+	GameObj.prototype.loadState = function(state, prevFrame) {
 		if(this._tile) {
 			this._tile.removeOccupant(this, false);
 		}
 		this._tile = state.tile;
 		this._tile.addOccupant(this, false);
+		this._isDead = state.isDead;
 	};
 	GameObj.prototype.renderAboveRowBelow = function() {
 		return false;
@@ -44,10 +50,10 @@ define([
 	};
 	GameObj.prototype.render = function(ctx, camera) {};
 	GameObj.prototype.isAlive = function() {
-		return true;
+		return !this._isDead;
 	};
 	GameObj.prototype.canEnter = function(obj, moveX, moveY) {
-		return !this.fillsTile || !obj.fillsTile;
+		return !this.isAlive() || !this.fillsTile || !obj.fillsTile;
 	};
 	GameObj.prototype.canLeave = function(obj, moveX, moveY) {
 		return true;

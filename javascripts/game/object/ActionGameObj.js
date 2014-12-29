@@ -19,14 +19,15 @@ define([
 		state.currentActionFramesLeft = this._currentActionFramesLeft;
 		return state;
 	};
-	ActionGameObj.prototype.loadState = function(state) {
-		SUPERCLASS.prototype.loadState.call(this, state);
+	ActionGameObj.prototype.loadState = function(state, prevFrame) {
+		SUPERCLASS.prototype.loadState.call(this, state, prevFrame);
 		this._prevAction = state.prevAction;
 		this._currentAction = state.currentAction;
 		this._currentActionFrames = state.currentActionFrames;
 		this._currentActionFramesLeft = state.currentActionFramesLeft;
 	};
 	ActionGameObj.prototype.startOfFrame = function() {
+		SUPERCLASS.prototype.startOfFrame.call(this);
 		if(this._currentActionFramesLeft !== null) {
 			this._currentActionFramesLeft--;
 			if(this._currentActionFramesLeft <= 0) {

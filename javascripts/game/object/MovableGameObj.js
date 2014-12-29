@@ -27,11 +27,11 @@ define([
 		state.nextTile = this._nextTile;
 		return state;
 	};
-	MovableGameObj.prototype.loadState = function(state) {
+	MovableGameObj.prototype.loadState = function(state, prevFrame) {
 		if(this._nextTile) {
 			this._nextTile.removeOccupant(this, false);
 		}
-		SUPERCLASS.prototype.loadState.call(this, state);
+		SUPERCLASS.prototype.loadState.call(this, state, prevFrame);
 		this._moveX = state.moveX;
 		this._moveY = state.moveY;
 		this._prevTile = state.prevTile;

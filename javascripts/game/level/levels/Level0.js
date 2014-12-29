@@ -6,7 +6,6 @@ define([
 	'game/object/item/Key',
 	'game/object/item/IDCard',
 	'game/object/actor/Player',
-	'game/object/actor/PastSelf',
 	'game/object/actor/Guard',
 	'game/object/door/LockedDoor',
 	'game/object/door/BarredDoor',
@@ -28,7 +27,6 @@ define([
 	Key,
 	IDCard,
 	Player,
-	PastSelf,
 	Guard,
 	LockedDoor,
 	BarredDoor,
@@ -62,8 +60,7 @@ define([
 		this.player = this.spawnGameObj(new Player(), 1, 2);
 		var key = this.spawnGameObj(new Key(), 1, 0);
 		var card = this.spawnGameObj(new IDCard(), 2, 0);
-		this.spawnGameObj(new PastSelf(), 3, 2);
-		this.spawnGameObj(new Guard(), 5, 2);
+		//this.spawnGameObj(new Guard(), 5, 2);
 		this.spawnGameObj(new LockedDoor({ dir: 'WEST', key: key }), 4, 7);
 		var securityDoor = this.spawnGameObj(new SecurityDoor({ dir: 'NORTH' }), 6, 6);
 		var lockedDoor = this.spawnGameObj(new BarredDoor({ dir: 'NORTH' }), 8, 6);

@@ -11,50 +11,48 @@ define([
 		this.tileGrid = new TileGrid();
 		this.objects = [];
 		this.camera = { x: 0, y: 0 };
-		this._frame = 0;
+		this.frame = 0;
 		this._stateHistory = {};
 	}
 	Level.prototype.update = function() {
 		var i, j, steps;
 
-		//save start
-		if(this._frame % 15 === 0) {
-			this._stateHistory[this._frame] = this.getState();
+		//save state
+		if(this.frame % 15 === 0) {
+			this._stateHistory[this.frame] = this.getState();
 		}
 
 		//start of frame
 		this.startOfFrame();
 		for(i = 0; i < this.objects.length; i++) {
-			if(this.objects[i].isAlive()) {
-				this.objects[i].startOfFrame();
-			}
+			this.objects[i].startOfFrame();
 		}
 
 		//tick (move everything)
 		for(i = this.objects.length - 1; i >= 0; i--) {
-			if(this.objects[i].isAlive()) {
-				this.objects[i].tick();
-			}
+			this.objects[i].tick();
 		}
 
 		//end of frame
 		for(i = 0; i < this.objects.length; i++) {
-			if(this.objects[i].isAlive()) {
-				this.objects[i].endOfFrame();
-			}
+			this.objects[i].endOfFrame();
 		}
 		this.endOfFrame();
 
-		this._frame++;
+		this.frame++;
 	};
 	Level.prototype.render = function(ctx) {
 		ctx.fillStyle = this.backgroundColor;
 		ctx.fillRect(0, 0, Global.CANVAS_WIDTH, Global.CANVAS_HEIGHT);
 		this.tileGrid.render(ctx, this.camera);
+		ctx.fillStyle = '#fff';
+		ctx.font = "12px Lucida Console";
+		var sec = "" + (Math.floor(this.frame / 6) / 10);
+		ctx.fillText(sec + (sec.indexOf(".") === -1 ? ".0" : ""), 20, 20);
 	};
 	Level.prototype.getState = function() {
 		var state = {
-			frame: this._frame,
+			frame: this.frame,
 			objects: {}
 		};
 		for(var i = 0; i < this.objects.length; i++) {
@@ -62,16 +60,16 @@ define([
 		}
 		return state;
 	};
-	Level.prototype.loadState = function(state) {
-		this._frame = state.frame;
+	Level.prototype.loadState = function(state, prevFrame) {
+		//this.frame = state.frame
 		for(var i = 0; i < this.objects.length; i++) {
 			if(state.objects[this.objects[i].id]) {
-				this.objects[i].loadState(state.objects[this.objects[i].id]);
+				this.objects[i].loadState(state.objects[this.objects[i].id], prevFrame);
 			}
 		}
 	};
 	Level.prototype.rewindState = function(frames) {
-		var frame = Math.floor((this._frame - frames) / 15) * 15;
+		var frame = Math.floor((this.frame - frames) / 15) * 15;
 		var actualFrame = frame;
 		while(frame > 0 && !this._stateHistory[frame]) {
 			frame -= 15;
@@ -79,8 +77,10 @@ define([
 		while(frame < 0 && !this._stateHistory[frame]) {
 			frame += 15;
 		}
-		this.loadState(this._stateHistory[frame]);
-		this._frame = actualFrame;
+		var prevFrame = this.frame;
+		this.frame = actualFrame; //TODO hacky
+		this.loadState(this._stateHistory[frame], prevFrame);
+		this._stateHistory[this.frame] = this.getState();
 	};
 	Level.prototype.startOfFrame = function() {};
 	Level.prototype.endOfFrame = function() {};

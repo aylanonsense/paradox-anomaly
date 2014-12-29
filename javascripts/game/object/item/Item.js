@@ -14,8 +14,8 @@ define([
 		state.carrier = this._carrier;
 		return state;
 	};
-	Item.prototype.loadState = function(state) {
-		SUPERCLASS.prototype.loadState.call(this, state);
+	Item.prototype.loadState = function(state, prevFrame) {
+		SUPERCLASS.prototype.loadState.call(this, state, prevFrame);
 		this._carrier = state.carrier;
 	};
 	Item.prototype.onPickedUp = function(obj) {
@@ -28,10 +28,8 @@ define([
 		this._carrier = null;
 	};
 	Item.prototype.onEnter = function(obj) {
-		if(!this.isBeingCarried()) {
-			if(obj.canCarryItems && !obj.isCarryingItem()) {
-				obj.pickUpItem(this);
-			}
+		if(obj.isAlive() && !this.isBeingCarried() && obj.canCarryItems && !obj.isCarryingItem()) {
+			obj.pickUpItem(this);
 		}
 	};
 	Item.prototype.isBeingCarried = function() {

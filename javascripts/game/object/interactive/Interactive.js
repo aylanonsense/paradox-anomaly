@@ -36,8 +36,10 @@ define([
 		}
 	};
 	Interactive.prototype.trigger = function() {
-		for(var i = 0; i < this._triggerCallbacks.length; i++) {
-			this._triggerCallbacks[i].call(this);
+		if(this.isAlive()) {
+			for(var i = 0; i < this._triggerCallbacks.length; i++) {
+				this._triggerCallbacks[i].call(this);
+			}
 		}
 	};
 	Interactive.prototype.onTriggered = function(callback) {
