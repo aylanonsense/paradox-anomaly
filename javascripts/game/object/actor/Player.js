@@ -20,6 +20,7 @@ define([
 		this._moveDir = null;
 		this._bufferedMoveDir = null;
 		this._actionHistory = [];
+		this._initialState = null;
 	}
 	Player.prototype = Object.create(SUPERCLASS.prototype);
 	Player.prototype.addToLevel = function(level, tile) {
@@ -28,16 +29,17 @@ define([
 			action: 'SPAWN',
 			frame: this._level.frame
 		});
+		this._initialState = this.getState();
 	};
 	Player.prototype.loadState = function(state, prevFrame) {
-		this._actionHistory.push({
-			action: 'DESPAWN',
-			frame: prevFrame
-		});
 		var pastSelf = this._level.spawnGameObj(new PastSelf({
-			actions: this._actionHistory
+			id: this.id,
+			actions: this._actionHistory,
+			initialState: this._initialState
 		}));
 		pastSelf.loadState(state, prevFrame);
+		this.assignNewId();
+		this._initialState = this.getState();
 		this._actionHistory = [{
 			action: 'SPAWN',
 			frame: this._level.frame
@@ -61,6 +63,11 @@ define([
 			if(this._isStandingStill) {
 				if(this._moveDir) {
 					this._facing = this._moveDir;
+					this._actionHistory.push({
+						action: 'TURN',
+						frame: this._level.frame,
+						facing: this._facing
+					});
 				}
 			}
 			else if(this._bufferedMoveDir) {
@@ -93,6 +100,10 @@ define([
 			else { this._moveDir = null; }
 		}
 		else if(evt.gameKey === 'USE' && evt.isDown) {
+			this._actionHistory.push({
+				action: 'USE',
+				frame: this._level.frame
+			});
 			if(this._tile.use(this, this._facing, false)) {
 				return;
 			}
@@ -106,6 +117,10 @@ define([
 			}
 		}
 		else if(evt.gameKey === 'TIME_TRAVEL' && evt.isDown) {
+			this._actionHistory.push({
+				action: 'DESPAWN',
+				frame: this._level.frame
+			});
 			this._level.rewindState(5 * 60);
 		}
 	};

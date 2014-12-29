@@ -63,9 +63,7 @@ define([
 	Level.prototype.loadState = function(state, prevFrame) {
 		//this.frame = state.frame
 		for(var i = 0; i < this.objects.length; i++) {
-			if(state.objects[this.objects[i].id]) {
-				this.objects[i].loadState(state.objects[this.objects[i].id], prevFrame);
-			}
+			this.objects[i].loadState(state.objects[this.objects[i].id] || null, prevFrame);
 		}
 	};
 	Level.prototype.rewindState = function(frames) {

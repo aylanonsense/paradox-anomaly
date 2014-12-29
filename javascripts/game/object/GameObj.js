@@ -6,7 +6,7 @@ define([
 	var NEXT_ID = 0;
 	function GameObj(params) {
 		params = params || {};
-		this.id = NEXT_ID++;
+		this.id = (typeof params.id === 'number' ? params.id : NEXT_ID++);
 		this._level = null;
 		this._tile = null;
 		this._isDead = false;
@@ -14,6 +14,9 @@ define([
 		this.canCarryItems = (params.canCarryItems === true);
 		this.isPushable = (params.isPushable === true);
 	}
+	GameObj.prototype.assignNewId = function() {
+		this.id = NEXT_ID++;
+	};
 	GameObj.prototype.addToLevel = function(level, tile) {
 		this._level = level;
 		this._tile = tile;
