@@ -12,9 +12,7 @@ define([
 	toDirection
 ) {
 	function Actor(params) {
-		SUPERCLASS.call(this, extend({
-			fillsTile: true
-		}, params));
+		SUPERCLASS.call(this, extend(params, { fillsTile: true }));
 		this._facing = params.facing || 'NORTH';
 		this._debugColor = params.debugColor || '#fff';
 		this._carriedItem = null;

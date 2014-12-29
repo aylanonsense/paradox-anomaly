@@ -1,10 +1,12 @@
 define([
-	'game/object/item/Item'
+	'game/object/item/Item',
+	'game/util/extend'
 ], function(
-	SUPERCLASS
+	SUPERCLASS,
+	extend
 ) {
 	function Key(params) {
-		SUPERCLASS.call(this, { debugColor: '#f00' });
+		SUPERCLASS.call(this, extend(params, { debugColor: '#f00' }));
 		this.door = params.door || null;
 	}
 	Key.prototype = Object.create(SUPERCLASS.prototype);

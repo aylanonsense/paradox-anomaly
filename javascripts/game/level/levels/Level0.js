@@ -58,15 +58,16 @@ define([
 
 		//create game objects
 		this.player = this.spawnGameObj(new Player(), 1, 2);
-		var card = this.spawnGameObj(new IDCard(), 2, 0);
 		//this.spawnGameObj(new Guard(), 5, 2);
 		var lockedDoor = this.spawnGameObj(new LockedDoor({ dir: 'WEST' }), 4, 7);
 		var securityDoor = this.spawnGameObj(new SecurityDoor({ dir: 'NORTH' }), 6, 6);
 		var barredDoor = this.spawnGameObj(new BarredDoor({ dir: 'NORTH' }), 8, 6);
 		this.spawnGameObj(new Key({ door: lockedDoor }), 1, 0);
-		this.spawnGameObj(new IDCardScanner({ dir: 'EAST', card: card }), 7, 2).onTriggered(function() {
+		var scanner = this.spawnGameObj(new IDCardScanner({ dir: 'EAST' }), 7, 2)
+		scanner.onTriggered(function() {
 			securityDoor.toggleLocked();
 		});
+		this.spawnGameObj(new IDCard({ scanner: scanner }), 2, 0);
 		this.spawnGameObj(new WallSwitch({ dir: 'SOUTH' }), 4, 4).onTriggered(function() {
 			barredDoor.toggleLocked();
 		});
