@@ -63,7 +63,12 @@ define([
 	Level.prototype.loadState = function(state, prevFrame) {
 		//this.frame = state.frame
 		for(var i = 0; i < this.objects.length; i++) {
-			this.objects[i].loadState(state.objects[this.objects[i].id] || null, prevFrame);
+			if(state.objects[this.objects[i].id]) {
+				this.objects[i].loadState(state.objects[this.objects[i].id], prevFrame);
+			}
+			else {
+				this.objects[i].loadState(this.objects[i].getInitialState(), prevFrame);
+			}
 		}
 	};
 	Level.prototype.rewindState = function(frames) {
@@ -77,7 +82,30 @@ define([
 		}
 		var prevFrame = this.frame;
 		this.frame = actualFrame; //TODO hacky
+		var playerDuplicate = this.player.dupe();
+		var carriedItemDuplicate = null;
+		var carriedItemState = null;
+		if(this.player.isCarryingItem()) {
+			carriedItemDuplicate = this.player.getCarriedItem().dupe();
+			carriedItemState = this.player.getCarriedItem().getState();
+		}
+		var playerState = this.player.getState();
+
+		//the current player becomes a "ghost" of itself
 		this.loadState(this._stateHistory[frame], prevFrame);
+		this.player.makePastSelf();
+
+		//then we create a new player and put it where the old player just was
+		this.player = this.spawnGameObj(playerDuplicate); //will not record initial state
+		this.player.loadState(playerState);
+		if(carriedItemDuplicate) {
+			this.spawnGameObj(carriedItemDuplicate); //will not record initial state
+			carriedItemDuplicate.loadState(carriedItemState);
+			playerDuplicate.pickUpItem(carriedItemDuplicate);
+			carriedItemDuplicate.recordInitialState();
+		}
+		this.player.recordInitialState();
+
 		this._stateHistory[this.frame] = this.getState();
 	};
 	Level.prototype.startOfFrame = function() {};
@@ -95,6 +123,9 @@ define([
 		}
 		this.objects.push(obj);
 		obj.addToLevel(this, tile);
+		if(tile) {
+			obj.recordInitialState();
+		}
 		return obj;
 	};
 	return Level;

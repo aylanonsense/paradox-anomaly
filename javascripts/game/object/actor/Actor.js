@@ -76,7 +76,7 @@ define([
 			if(this._tile.canLeave(this._carriedItem, vector.x, vector.y)) {
 				var nextTile = this._level.tileGrid.get(this.col + vector.x, this.row + vector.y);
 				if(nextTile && nextTile.canEnter(this._carriedItem, vector.x, vector.y) &&
-					nextTile.isVirtuallyEmpty()) {
+					nextTile.isVirtuallyEmpty(true)) {
 					this._carriedItem.onDroppedInto(nextTile, this);
 					this._carriedItem = null;
 					return true;
@@ -97,6 +97,11 @@ define([
 		ctx.moveTo(this.x - camera.x, this.y - camera.y);
 		ctx.lineTo(this.x + 20 * vector.x - camera.x, this.y + 20 * vector.y - camera.y);
 		ctx.stroke();
+
+		//draw carried item
+		if(this.isCarryingItem()) {
+			this._carriedItem.render(ctx, camera, true);
+		}
 	};
 	return Actor;
 });

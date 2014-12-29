@@ -10,6 +10,7 @@ define([
 		this._level = null;
 		this._tile = null;
 		this._isDead = false;
+		this._initialState = null;
 		this.fillsTile = (params.fillsTile === true);
 		this.canCarryItems = (params.canCarryItems === true);
 		this.isPushable = (params.isPushable === true);
@@ -23,6 +24,13 @@ define([
 		if(this._tile) {
 			this._tile.addOccupant(this);
 		}
+		this._initialState = this.getState();
+	};
+	GameObj.prototype.recordInitialState = function() {
+		this._initialState = this.getState();
+	};
+	GameObj.prototype.getInitialState = function() {
+		return this._initialState;
 	};
 	GameObj.prototype.sameAs = function(other) {
 		return other && other.id == this.id;

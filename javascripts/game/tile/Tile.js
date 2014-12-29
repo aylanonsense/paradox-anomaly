@@ -68,9 +68,10 @@ define([
 		}
 		return true;
 	};
-	Tile.prototype.isVirtuallyEmpty = function() {
+	Tile.prototype.isVirtuallyEmpty = function(allowCarriers) {
 		for(var i = 0; i < this._occupants.length; i++) {
-			if(this._occupants[i].isAlive() && this._occupants[i].fillsTile) {
+			if(this._occupants[i].isAlive() && this._occupants[i].fillsTile &&
+				(!allowCarriers || !this._occupants[i].canCarryItems)) {
 				return false;
 			}
 		}
@@ -86,6 +87,9 @@ define([
 	};
 	Tile.prototype.reserveForOccupant = function(occupant, triggerEvents) {
 		this._reservedFor.push(occupant);
+	};
+	Tile.prototype.getOccupants = function() {
+		return this._occupants;
 	};
 	Tile.prototype.addOccupant = function(occupant, triggerEvents) {
 		if(occupant.isAlive() && triggerEvents !== false) {

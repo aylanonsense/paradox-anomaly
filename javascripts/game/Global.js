@@ -6,10 +6,10 @@ define({
 	TILE_HEIGHT: 60,
 	IMAGE_SMOOTHING: false,
 	KEY_BINDINGS: {
-		37: 'MOVE_LEFT', //left arrow key
-		39: 'MOVE_RIGHT', //right arrow key
-		38: 'MOVE_UP', //up arrow key
-		40: 'MOVE_DOWN', //down arrow key
+		38: 'MOVE_UP', 87: 'MOVE_UP', //up arrow key / w key
+		37: 'MOVE_LEFT', 65: 'MOVE_LEFT', //left arrow key / a key
+		40: 'MOVE_DOWN', 83: 'MOVE_DOWN', //down arrow key / s key
+		39: 'MOVE_RIGHT', 68: 'MOVE_RIGHT', //right arrow key / d key
 		90: 'USE', //z key
 		88: 'TIME_TRAVEL', //x key
 		16: 'STAND_STILL' //shift key
