@@ -18,5 +18,6 @@ define({
 	//debug variables
 	DEBUG_FRAMERATE: null,
 	DEBUG_DRAW_GRIDLINES: true,
-	DEBUG_DRAW_ACTOR_BORDERS: true
+	DEBUG_TRACE_SPRITES: false,
+	DEBUG_HIDE_SPRITES: false
 });

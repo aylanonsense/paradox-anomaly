@@ -1,11 +1,15 @@
 define([
 	'game/object/actor/Actor',
 	'game/util/toVector',
-	'game/util/toDirection'
+	'game/util/toDirection',
+	'create!game/display/Sprite > GreenWoman',
+	'create!game/display/Sprite > TimeTravelFlash'
 ], function(
 	SUPERCLASS,
 	toVector,
-	toDirection
+	toDirection,
+	SPRITE,
+	FLASH_SPRITE
 ) {
 	function Player() {
 		SUPERCLASS.call(this, {
@@ -21,6 +25,7 @@ define([
 		this._actionHistory = [];
 		this._spawnTime = null;
 		this._despawnTime = null;
+		this._moveFrames = 0;
 	}
 	Player.prototype = Object.create(SUPERCLASS.prototype);
 	Player.prototype.addToLevel = function(level, tile) {
@@ -64,6 +69,7 @@ define([
 	};
 	Player.prototype.startOfFrame = function(frame) {
 		SUPERCLASS.prototype.startOfFrame.call(this, frame);
+		this._moveFrames += (this.isMoving() ? 1 : 0);
 		if(this._isPastSelf) {
 			this._isDead = (this._level.frame < this._spawnTime ||
 					this._level.frame >= this._despawnTime);
@@ -152,6 +158,41 @@ define([
 				this._despawnTime = this._level.frame;
 				this._level.rewindState(5 * 60);
 			}
+		}
+	};
+	Player.prototype.render = function(ctx, camera) {
+		var frame;
+		var x = this.x - SPRITE.width / 2;
+		var y = this.y - SPRITE.height * 0.8;
+		if(this._facing === 'NORTH') { frame = 3; }
+		else if(this._facing === 'SOUTH') { frame = 0; }
+		else if(this._facing === 'EAST') { frame = 6; }
+		else if(this._facing === 'WEST') { frame = 9; }
+		if(this._isPastSelf) { frame += 12; }
+		if(this.isMoving()) {
+			frame += (this._moveFrames % 30 > 15 ? 2 : 1);
+		}
+
+		//draw time travel flash and player sprite
+		var spawnFlashFrame = Math.floor((this._level.frame - this._spawnTime) / 3);
+		var despawnFlashFrame = (this._despawnTime === null ? -1 :
+			5 - Math.floor((this._despawnTime -  this._level.frame) / 3));
+		if(0 <= spawnFlashFrame && spawnFlashFrame < 6) {
+			if(spawnFlashFrame >= 2 || !this._isPastSelf) {
+				SPRITE.render(ctx, camera, x, y, frame, false);
+			}
+			FLASH_SPRITE.render(ctx, camera, x, y,
+				(this._isPastSelf ? 6 : 0) + spawnFlashFrame, false);
+		}
+		else if(0 <= despawnFlashFrame && despawnFlashFrame < 6) {
+			if(despawnFlashFrame < 2 || !this._isPastSelf) {
+				SPRITE.render(ctx, camera, x, y, frame, false);
+			}
+			FLASH_SPRITE.render(ctx, camera, x, y,
+				(this._isPastSelf ? 6 : 0) + despawnFlashFrame, false);
+		}
+		else {
+			SPRITE.render(ctx, camera, x, y, frame, false);
 		}
 	};
 	return Player;
