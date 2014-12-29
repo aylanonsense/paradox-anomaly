@@ -19,6 +19,15 @@ define([
 		this._bufferedMoveDir = null;
 	}
 	Player.prototype = Object.create(SUPERCLASS.prototype);
+	Player.prototype.getState = function() {
+		var state = SUPERCLASS.prototype.getState.call(this);
+		//input state variables are preserved across loading state
+		return state;
+	};
+	Player.prototype.loadState = function(state) {
+		SUPERCLASS.prototype.loadState.call(this, state);
+		//input state variables are preserved across loading state
+	};
 	Player.prototype.startOfFrame = function() {
 		SUPERCLASS.prototype.startOfFrame.call(this);
 		if(!this.isMoving()) {
@@ -67,6 +76,9 @@ define([
 			if(this.dropCarriedItem()) {
 				return;
 			}
+		}
+		else if(evt.gameKey === 'TIME_TRAVEL' && evt.isDown) {
+			this._level.rewindState(120);
 		}
 	};
 	return Player;

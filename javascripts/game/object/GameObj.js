@@ -6,13 +6,12 @@ define([
 	var NEXT_ID = 0;
 	function GameObj(params) {
 		params = params || {};
-		this._gameObjId = NEXT_ID++;
+		this.id = NEXT_ID++;
 		this._level = null;
 		this._tile = null;
 		this.fillsTile = (params.fillsTile === true);
 		this.canCarryItems = (params.canCarryItems === true);
 		this.isPushable = (params.isPushable === true);
-		this.pushWeight = (params.pushWeight || 0);
 	}
 	GameObj.prototype.addToLevel = function(level, tile) {
 		this._level = level;
@@ -20,7 +19,15 @@ define([
 		this._tile.addOccupant(this);
 	};
 	GameObj.prototype.sameAs = function(other) {
-		return other && other._gameObjId == this._gameObjId;
+		return other && other.id == this.id;
+	};
+	GameObj.prototype.getState = function() {
+		return { tile: this._tile };
+	};
+	GameObj.prototype.loadState = function(state) {
+		this._tile.removeOccupant(this, false);
+		this._tile = state.tile;
+		this._tile.addOccupant(this, false);
 	};
 	GameObj.prototype.renderAboveRowBelow = function() {
 		return false;
@@ -32,7 +39,7 @@ define([
 		return false;
 	};
 	GameObj.prototype.render = function(ctx, camera) {};
-	GameObj.prototype.isAlive = function(isAlive) {
+	GameObj.prototype.isAlive = function() {
 		return true;
 	};
 	GameObj.prototype.canEnter = function(obj, moveX, moveY) {

@@ -21,6 +21,17 @@ define([
 		this.canPush = (params.canPush === true);
 	}
 	Actor.prototype = Object.create(SUPERCLASS.prototype);
+	Actor.prototype.getState = function() {
+		var state = SUPERCLASS.prototype.getState.call(this);
+		state.facing = this._facing;
+		state.carriedItem = this._carriedItem;
+		return state;
+	};
+	Actor.prototype.loadState = function(state) {
+		SUPERCLASS.prototype.loadState.call(this, state);
+		this._facing = state.facing;
+		this._carriedItem = state.carriedItem;
+	};
 	Actor.prototype.move = function(moveX, moveY, speed) {
 		speed = speed || this._defaultSpeed;
 		if(SUPERCLASS.prototype.move.call(this, moveX, moveY, speed)) {

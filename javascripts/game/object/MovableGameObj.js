@@ -19,6 +19,27 @@ define([
 		this._prevTile = this._tile;
 		this._nextTile = null;
 	};
+	MovableGameObj.prototype.getState = function() {
+		var state = SUPERCLASS.prototype.getState.call(this);
+		state.moveX = this._moveX;
+		state.moveY = this._moveY;
+		state.prevTile = this._prevTile;
+		state.nextTile = this._nextTile;
+		return state;
+	};
+	MovableGameObj.prototype.loadState = function(state) {
+		if(this._nextTile) {
+			this._nextTile.removeOccupant(this, false);
+		}
+		SUPERCLASS.prototype.loadState.call(this, state);
+		this._moveX = state.moveX;
+		this._moveY = state.moveY;
+		this._prevTile = state.prevTile;
+		this._nextTile = state.nextTile;
+		if(this._nextTile) {
+			this._nextTile.reserveForOccupant(this, false);
+		}
+	};
 	MovableGameObj.prototype.startOfFrame = function() {
 		SUPERCLASS.prototype.startOfFrame.call(this);
 		if(this.isMoving() && this._nextTile !== null &&

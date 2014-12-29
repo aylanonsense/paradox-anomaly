@@ -14,6 +14,15 @@ define([
 		this._debugColor = params.debugColor || '#fff';
 	}
 	Door.prototype = Object.create(SUPERCLASS.prototype);
+	Door.prototype.getState = function() {
+		var state = SUPERCLASS.prototype.getState.call(this);
+		state.isLocked = this._isLocked;
+		return state;
+	};
+	Door.prototype.loadState = function(state) {
+		SUPERCLASS.prototype.loadState.call(this, state);
+		this._isLocked = state.isLocked;
+	};
 	Door.prototype.lock = function() {
 		this._isLocked = true;
 	};

@@ -11,6 +11,21 @@ define([
 		this._currentActionFramesLeft = null;
 	}
 	ActionGameObj.prototype = Object.create(SUPERCLASS.prototype);
+	ActionGameObj.prototype.getState = function() {
+		var state = SUPERCLASS.prototype.getState.call(this);
+		state.prevAction = this._prevAction;
+		state.currentAction = this._currentAction;
+		state.currentActionFrames = this._currentActionFrames;
+		state.currentActionFramesLeft = this._currentActionFramesLeft;
+		return state;
+	};
+	ActionGameObj.prototype.loadState = function(state) {
+		SUPERCLASS.prototype.loadState.call(this, state);
+		this._prevAction = state.prevAction;
+		this._currentAction = state.currentAction;
+		this._currentActionFrames = state.currentActionFrames;
+		this._currentActionFramesLeft = state.currentActionFramesLeft;
+	};
 	ActionGameObj.prototype.startOfFrame = function() {
 		if(this._currentActionFramesLeft !== null) {
 			this._currentActionFramesLeft--;

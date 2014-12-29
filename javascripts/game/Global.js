@@ -11,6 +11,7 @@ define({
 		38: 'MOVE_UP', //up arrow key
 		40: 'MOVE_DOWN', //down arrow key
 		90: 'USE', //z key
+		88: 'TIME_TRAVEL', //x key
 		16: 'STAND_STILL' //shift key
 	},
 

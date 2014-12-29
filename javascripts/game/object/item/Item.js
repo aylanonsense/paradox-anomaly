@@ -9,6 +9,15 @@ define([
 		this._carrier = null;
 	}
 	Item.prototype = Object.create(SUPERCLASS.prototype);
+	Item.prototype.getState = function() {
+		var state = SUPERCLASS.prototype.getState.call(this);
+		state.carrier = this._carrier;
+		return state;
+	};
+	Item.prototype.loadState = function(state) {
+		SUPERCLASS.prototype.loadState.call(this, state);
+		this._carrier = state.carrier;
+	};
 	Item.prototype.onPickedUp = function(obj) {
 		this._carrier = obj;
 	};
