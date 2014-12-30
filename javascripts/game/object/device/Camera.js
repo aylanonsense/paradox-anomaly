@@ -1,9 +1,11 @@
 define([
 	'game/object/device/Device',
-	'game/Global'
+	'game/Global',
+	'create!game/display/Sprite > WallThings'
 ], function(
 	SUPERCLASS,
-	Global
+	Global,
+	SPRITE
 ) {
 	function Camera(params) {
 		SUPERCLASS.call(this, params);
@@ -33,6 +35,15 @@ define([
 				this.tileY + Global.TILE_HEIGHT / 2 - 6 - camera.y,
 				20, 12);
 		}
+	};
+	Camera.prototype.render = function(ctx, camera) {
+		var frame;
+		if(this._dir === 'NORTH') { frame = 3; }
+		else if(this._dir === 'SOUTH') { frame = 0; }
+		else if(this._dir === 'EAST') { frame = 2; }
+		else if(this._dir === 'WEST') { frame = 1; }
+		SPRITE.render(ctx, camera, this.x - SPRITE.width / 2,
+			this.y - SPRITE.height / 2, frame + 8, false);
 	};
 	return Camera;
 });

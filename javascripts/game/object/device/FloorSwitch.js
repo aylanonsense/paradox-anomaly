@@ -1,9 +1,11 @@
 define([
 	'game/object/device/Device',
-	'game/Global'
+	'game/Global',
+	'create!game/display/Sprite > Obstacles' //oops wrong sprite sheet
 ], function(
 	SUPERCLASS,
-	Global
+	Global,
+	SPRITE
 ) {
 	function FloorSwitch(params) {
 		SUPERCLASS.call(this, params);
@@ -14,6 +16,10 @@ define([
 		ctx.strokeStyle = this._debugColor;
 		ctx.lineWidth = 2;
 		ctx.strokeRect(this.x - 17 - camera.x, this.y - 17 - camera.y, 34, 34);
+	};
+	FloorSwitch.prototype.render = function(ctx, camera) {
+		SPRITE.render(ctx, camera, this.x - SPRITE.width / 2,
+			this.y - SPRITE.height / 2, 1, false);
 	};
 	return FloorSwitch;
 });

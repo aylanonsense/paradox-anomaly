@@ -39,13 +39,33 @@ define({
 		trim: { x: 2, y: 2, width: 5, height: 3 },
 		loadingColor: '#ce9925'
 	},
+	Obstacles: {
+		imagePath: '/image/spritesheet.gif',
+		width: 12,
+		height: 12,
+		scale: 6,
+		flip: false,
+		crop: { x: 42, y: 61, width: 24, height: 24 },
+		trim: { x: 2, y: 5, width: 9, height: 6 },
+		loadingColor: '#f00'
+	},
+	WallThings: {
+		imagePath: '/image/spritesheet.gif',
+		width: 12,
+		height: 14,
+		scale: 6,
+		flip: false,
+		crop: { x: 49, y: 89, width: 48, height: 98 },
+		trim: { x: 0, y: 5, width: 12, height: 9 },
+		loadingColor: '#0f0'
+	},
 	Door: {
 		imagePath: '/image/spritesheet.gif',
 		width: 12,
 		height: 14,
 		scale: 6,
 		flip: false,
-		crop: { x: 42, y: 61, width: 48, height: 84 },
+		crop: { x: 0, y: 89, width: 48, height: 84 },
 		trim: { x: 0, y: 5, width: 12, height: 9 },
 		loadingColor: '#ce9925'
 	}

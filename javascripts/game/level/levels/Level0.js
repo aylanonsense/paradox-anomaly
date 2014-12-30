@@ -12,7 +12,7 @@ define([
 	'game/object/door/SecurityDoor',
 	'game/object/interactive/IDCardScanner',
 	'game/object/interactive/SimultaneousWallSwitch',
-	'game/object/interactive/WallSwitch',
+	'game/object/interactive/WallButton',
 	'game/object/obstacle/Crate',
 	'game/object/device/FloorSwitch',
 	'game/object/device/LaserTripWire',
@@ -33,7 +33,7 @@ define([
 	SecurityDoor,
 	IDCardScanner,
 	SimultaneousWallSwitch,
-	WallSwitch,
+	WallButton,
 	Crate,
 	FloorSwitch,
 	LaserTripWire,
@@ -63,21 +63,21 @@ define([
 		var securityDoor = this.spawnGameObj(new SecurityDoor({ dir: 'NORTH' }), 6, 6);
 		var barredDoor = this.spawnGameObj(new BarredDoor({ dir: 'NORTH' }), 8, 6);
 		this.spawnGameObj(new Key({ door: lockedDoor }), 1, 0);
-		var scanner = this.spawnGameObj(new IDCardScanner({ dir: 'EAST' }), 7, 2)
+		var scanner = this.spawnGameObj(new IDCardScanner({ dir: 'EAST' }), 7, 2);
 		scanner.onTriggered(function() {
 			securityDoor.toggleLocked();
 		});
 		this.spawnGameObj(new IDCard({ scanner: scanner }), 2, 0);
-		this.spawnGameObj(new WallSwitch({ dir: 'SOUTH' }), 4, 4).onTriggered(function() {
+		this.spawnGameObj(new WallButton({ dir: 'SOUTH' }), 4, 4).onTriggered(function() {
 			barredDoor.toggleLocked();
 		});
-		this.spawnGameObj(new WallSwitch({ dir: 'NORTH' }), 7, 7).onTriggered(function() {
+		this.spawnGameObj(new WallButton({ dir: 'NORTH' }), 7, 7).onTriggered(function() {
 			barredDoor.toggleLocked();
 		});
 		this.spawnGameObj(new SimultaneousWallSwitch({ dir: 'WEST' }), 1, 5);
 		this.spawnGameObj(new SimultaneousWallSwitch({ dir: 'WEST' }), 1, 7);
-		//this.spawnGameObj(new Crate(), 2, 1);
-		//this.spawnGameObj(new FloorSwitch(), 4, 1);
+		this.spawnGameObj(new Crate(), 2, 1);
+		this.spawnGameObj(new FloorSwitch(), 4, 1);
 		this.spawnGameObj(new LaserTripWire({ dir: 'WEST' }), 3, 6);
 		this.spawnGameObj(new Camera({ dir: 'WEST' }), 3, 5);
 		this.spawnGameObj(new WallMountedTurret({ dir: 'NORTH' }), 5, 5);
