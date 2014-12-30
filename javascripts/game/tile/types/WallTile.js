@@ -1,9 +1,11 @@
 define([
 	'game/tile/Tile',
-	'game/Global'
+	'game/Global',
+	'create!game/display/Sprite > DefaultTile'
 ], function(
 	SUPERCLASS,
-	Global
+	Global,
+	SPRITE
 ) {
 	var NEXT_ID = 0;
 	function WallTile() {
@@ -11,10 +13,8 @@ define([
 	}
 	WallTile.prototype = Object.create(SUPERCLASS.prototype);
 	WallTile.prototype.render = function(ctx, camera) {
-		ctx.fillStyle = '#00b';
-		ctx.fillRect(this.col * Global.TILE_WIDTH - camera.x,
-			this.row * Global.TILE_HEIGHT - camera.y,
-			Global.TILE_WIDTH, Global.TILE_HEIGHT);
+		SPRITE.render(ctx, camera, (this.col - 0) * Global.TILE_WIDTH,
+			(this.row - 0) * Global.TILE_HEIGHT, 1, false);
 		SUPERCLASS.prototype.render.call(this, ctx, camera);
 	};
 	WallTile.prototype.canEnter = function(occupant, moveX, moveY) {

@@ -16,6 +16,7 @@ define([
 		this._facing = params.facing || 'NORTH';
 		this._debugColor = params.debugColor || '#fff';
 		this._carriedItem = null;
+		this.carriedItemRenderOffset = params.carriedItemRenderOffset || { x: 0, y: 0 };
 		this.canPush = (params.canPush === true);
 	}
 	Actor.prototype = Object.create(SUPERCLASS.prototype);
@@ -84,7 +85,7 @@ define([
 		return false;
 	};
 	Actor.prototype.render = function(ctx, camera) {
-		ctx.fillStyle = this._debugColor;
+		/*ctx.fillStyle = this._debugColor;
 		ctx.fillRect(this.x - 20 - camera.x, this.y - 20 - camera.y, 40, 40);
 
 		//draw facing
@@ -94,7 +95,7 @@ define([
 		ctx.beginPath();
 		ctx.moveTo(this.x - camera.x, this.y - camera.y);
 		ctx.lineTo(this.x + 20 * vector.x - camera.x, this.y + 20 * vector.y - camera.y);
-		ctx.stroke();
+		ctx.stroke();*/
 
 		//draw carried item
 		if(this.isCarryingItem()) {

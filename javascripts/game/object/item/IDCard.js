@@ -1,9 +1,11 @@
 define([
 	'game/object/item/Item',
-	'game/util/extend'
+	'game/util/extend',
+	'create!game/display/Sprite > Items'
 ], function(
 	SUPERCLASS,
-	extend
+	extend,
+	SPRITE
 ) {
 	function IDCard(params) {
 		SUPERCLASS.call(this, extend(params, { debugColor: '#fc0' }));
@@ -14,6 +16,12 @@ define([
 		var dupe = new IDCard({ scanner: this.scanner });
 		dupe.loadState(this.getState());
 		return dupe;
+	};
+	IDCard.prototype.render = function(ctx, camera, calledByCarrier) {
+		if(!this.isBeingCarried() || calledByCarrier) {
+			SPRITE.render(ctx, camera, this.x - SPRITE.width / 2,
+				this.y - SPRITE.height / 2, 1, false);
+		}
 	};
 	return IDCard;
 });

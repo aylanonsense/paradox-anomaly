@@ -54,13 +54,13 @@ define([
 	};
 	Item.prototype._getX = function() {
 		if(this.isBeingCarried()) {
-			return this._carrier.x;
+			return this._carrier.x + this._carrier.carriedItemRenderOffset.x;
 		}
 		return SUPERCLASS.prototype._getX.call(this);
 	};
 	Item.prototype._getY = function() {
 		if(this.isBeingCarried()) {
-			return this._carrier.y;
+			return this._carrier.y + this._carrier.carriedItemRenderOffset.y;
 		}
 		return SUPERCLASS.prototype._getY.call(this);
 	};

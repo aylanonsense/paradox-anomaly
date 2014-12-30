@@ -16,7 +16,8 @@ define([
 			speed: 2,
 			canCarryItems: true,
 			canPush: true,
-			debugColor: '#0f0'
+			debugColor: '#0f0',
+			carriedItemRenderOffset: { x: 0, y: -SPRITE.height - 1 }
 		});
 		this._isStandingStill = false;
 		this._moveDir = null;
@@ -163,7 +164,7 @@ define([
 	Player.prototype.render = function(ctx, camera) {
 		var frame;
 		var x = this.x - SPRITE.width / 2;
-		var y = this.y - SPRITE.height * 0.8;
+		var y = this.y - SPRITE.height * 0.9;
 		if(this._facing === 'NORTH') { frame = 3; }
 		else if(this._facing === 'SOUTH') { frame = 0; }
 		else if(this._facing === 'EAST') { frame = 6; }
@@ -194,6 +195,8 @@ define([
 		else {
 			SPRITE.render(ctx, camera, x, y, frame, false);
 		}
+
+		SUPERCLASS.prototype.render.call(this, ctx, camera);
 	};
 	return Player;
 });

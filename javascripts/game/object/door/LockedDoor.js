@@ -1,11 +1,13 @@
 define([
 	'game/object/door/Door',
 	'game/util/extend',
-	'game/util/toOppositeDirection'
+	'game/util/toOppositeDirection',
+	'create!game/display/Sprite > Door'
 ], function(
 	SUPERCLASS,
 	extend,
-	toOppositeDirection
+	toOppositeDirection,
+	SPRITE
 ) {
 	function LockedDoor(params) {
 		SUPERCLASS.call(this, extend(params, { debugColor: '#f00' }));
@@ -20,6 +22,18 @@ define([
 			return true;
 		}
 		return SUPERCLASS.prototype.use.call(obj, dir, isDistant);
+	};
+	LockedDoor.prototype.render = function(ctx, camera) {
+		var frame;
+		if(this._dir === 'NORTH') { frame = 0; }
+		else if(this._dir === 'SOUTH') { frame = 3; }
+		else if(this._dir === 'EAST') { frame = 1; }
+		else if(this._dir === 'WEST') { frame = 2; }
+		if(!this.isLocked()) {
+			frame += 4;
+		}
+		SPRITE.render(ctx, camera, this.x - SPRITE.width / 2,
+			this.y - SPRITE.height / 2, frame, false);
 	};
 	return LockedDoor;
 });

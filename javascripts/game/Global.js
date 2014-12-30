@@ -2,8 +2,8 @@ define({
 	TARGET_FRAMERATE: 60, //used for moving actors the correct amount each frame
 	CANVAS_WIDTH: 800,
 	CANVAS_HEIGHT: 600,
-	TILE_WIDTH: 80,
-	TILE_HEIGHT: 60,
+	TILE_WIDTH: 6 * 12,
+	TILE_HEIGHT: 6 * 9,
 	IMAGE_SMOOTHING: false,
 	KEY_BINDINGS: {
 		38: 'MOVE_UP', 87: 'MOVE_UP', //up arrow key / w key
@@ -17,7 +17,7 @@ define({
 
 	//debug variables
 	DEBUG_FRAMERATE: null,
-	DEBUG_DRAW_GRIDLINES: true,
+	DEBUG_DRAW_GRIDLINES: false,
 	DEBUG_TRACE_SPRITES: false,
 	DEBUG_HIDE_SPRITES: false
 });

@@ -1,13 +1,27 @@
 define([
 	'game/object/door/Door',
-	'game/util/extend'
+	'game/util/extend',
+	'create!game/display/Sprite > Door'
 ], function(
 	SUPERCLASS,
-	extend
+	extend,
+	SPRITE
 ) {
 	function BarredDoor(params) {
 		SUPERCLASS.call(this, extend(params, { debugColor: '#00f' }));
 	}
 	BarredDoor.prototype = Object.create(SUPERCLASS.prototype);
+	BarredDoor.prototype.render = function(ctx, camera) {
+		var frame;
+		if(this._dir === 'NORTH') { frame = 0; }
+		else if(this._dir === 'SOUTH') { frame = 3; }
+		else if(this._dir === 'EAST') { frame = 1; }
+		else if(this._dir === 'WEST') { frame = 2; }
+		if(!this.isLocked()) {
+			frame += 4;
+		}
+		SPRITE.render(ctx, camera, this.x - SPRITE.width / 2,
+			this.y - SPRITE.height / 2, frame + 16, false);
+	};
 	return BarredDoor;
 });

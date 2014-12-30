@@ -76,8 +76,8 @@ define([
 		});
 		this.spawnGameObj(new SimultaneousWallSwitch({ dir: 'WEST' }), 1, 5);
 		this.spawnGameObj(new SimultaneousWallSwitch({ dir: 'WEST' }), 1, 7);
-		this.spawnGameObj(new Crate(), 2, 1);
-		this.spawnGameObj(new FloorSwitch(), 4, 1);
+		//this.spawnGameObj(new Crate(), 2, 1);
+		//this.spawnGameObj(new FloorSwitch(), 4, 1);
 		this.spawnGameObj(new LaserTripWire({ dir: 'WEST' }), 3, 6);
 		this.spawnGameObj(new Camera({ dir: 'WEST' }), 3, 5);
 		this.spawnGameObj(new WallMountedTurret({ dir: 'NORTH' }), 5, 5);
