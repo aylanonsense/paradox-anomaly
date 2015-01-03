@@ -35,10 +35,10 @@ define([
 				5, 20);
 		}
 	};
-	Interactive.prototype.trigger = function() {
+	Interactive.prototype.trigger = function(onOrOff) {
 		if(this.isAlive()) {
 			for(var i = 0; i < this._triggerCallbacks.length; i++) {
-				this._triggerCallbacks[i].call(this);
+				this._triggerCallbacks[i].call(this, onOrOff);
 			}
 		}
 	};

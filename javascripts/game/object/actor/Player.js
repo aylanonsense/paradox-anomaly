@@ -11,7 +11,7 @@ define([
 	SPRITE,
 	FLASH_SPRITE
 ) {
-	function Player() {
+	function Player(params) {
 		SUPERCLASS.call(this, {
 			speed: 2,
 			canCarryItems: true,
@@ -19,6 +19,7 @@ define([
 			debugColor: '#0f0',
 			carriedItemRenderOffset: { x: 0, y: -SPRITE.height - 1 }
 		});
+		this._facing = params.facing || this._facing;
 		this._isStandingStill = false;
 		this._moveDir = null;
 		this._bufferedMoveDir = null;
@@ -34,7 +35,7 @@ define([
 		this._spawnTime = this._level.frame;
 	};
 	Player.prototype.dupe = function() {
-		var dupe = new Player();
+		var dupe = new Player({});
 		dupe._isStandingStill = this._isStandingStill;
 		dupe._moveDir = this._moveDir;
 		dupe._bufferedMoveDir = this._bufferedMoveDir;

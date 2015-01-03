@@ -9,7 +9,7 @@ define([
 ) {
 	var NEXT_ID = 0;
 	function FloorTile() {
-		SUPERCLASS.call(this);
+		SUPERCLASS.call(this, { type: 'FLOOR' });
 	}
 	FloorTile.prototype = Object.create(SUPERCLASS.prototype);
 	FloorTile.prototype.render = function(ctx, camera) {

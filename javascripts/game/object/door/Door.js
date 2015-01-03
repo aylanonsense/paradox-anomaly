@@ -32,6 +32,17 @@ define([
 	Door.prototype.isLocked = function() {
 		return this._isLocked;
 	};
+	Door.prototype.trigger = function(onOrOff) {
+		if(onOrOff === true) {
+			this.unlock();
+		}
+		else if(onOrOff === false) {
+			this.lock();
+		}
+		else {
+			this.toggleLocked();
+		}
+	}
 	Door.prototype.toggleLocked = function(isLocked) {
 		if(isLocked === true) {
 			this.lock();

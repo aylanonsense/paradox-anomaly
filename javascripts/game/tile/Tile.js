@@ -3,7 +3,8 @@ define([
 ], function(
 	Global
 ) {
-	function Tile() {
+	function Tile(params) {
+		this.type = params.type;
 		this._tileGrid = null;
 		this.col = null;
 		this.row = null;
@@ -111,6 +112,13 @@ define([
 		this._reservedFor = this._reservedFor.filter(function(otherOccupant) {
 			return !otherOccupant.sameAs(occupant);
 		});
+		if(occupant.isAlive() && triggerEvents !== false) {
+			for(var i = 0; i < this._occupants.length; i++) {
+				if(this._occupants[i].isAlive()) {
+					this._occupants[i].onLeave(occupant);
+				}
+			}
+		}
 	};
 	Tile.prototype.renderOccupants = function(ctx, camera) {
 		for(var i = 0; i < this._occupants.length; i++) {

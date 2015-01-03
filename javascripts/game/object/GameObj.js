@@ -70,6 +70,7 @@ define([
 		return true;
 	};
 	GameObj.prototype.onEnter = function(obj) {};
+	GameObj.prototype.onLeave = function(obj) {};
 
 	//define useful getters/setters
 	GameObj.prototype._getX = function() {

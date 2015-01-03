@@ -1,5 +1,5 @@
 define([
-	'game/level/levels/Level0'
+	'game/level/levels/Level1'
 ], function(
 	Level
 ) {
