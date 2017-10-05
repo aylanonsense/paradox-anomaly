@@ -1,9 +1,9 @@
 //configure requirejs
 requirejs.config({
-	baseUrl: 'javascripts',
+	baseUrl: BASE_URL + '/javascripts',
 	paths: {
-		jquery: '/javascripts/lib/jquery',
-		create: '/javascripts/lib/instanqi8'
+		jquery: 'lib/jquery',
+		create: 'lib/instanqi8'
 	}
 });
 

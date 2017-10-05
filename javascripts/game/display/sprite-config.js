@@ -1,6 +1,6 @@
 define({
 	GreenWoman: {
-		imagePath: '/image/spritesheet.gif',
+		imagePath: BASE_URL + '/image/spritesheet.gif',
 		width: 7,
 		height: 14,
 		scale: 6,
@@ -10,7 +10,7 @@ define({
 		loadingColor: '#79ec2e'
 	},
 	TimeTravelFlash: {
-		imagePath: '/image/spritesheet.gif',
+		imagePath: BASE_URL + '/image/spritesheet.gif',
 		width: 15,
 		height: 15,
 		scale: 6,
@@ -20,7 +20,7 @@ define({
 		loadingColor: '#79ec2e'
 	},
 	DefaultTile: {
-		imagePath: '/image/spritesheet.gif',
+		imagePath: BASE_URL + '/image/spritesheet.gif',
 		width: 12,
 		height: 14,
 		scale: 6,
@@ -30,7 +30,7 @@ define({
 		loadingColor: '#703c2e'
 	},
 	Items: {
-		imagePath: '/image/spritesheet.gif',
+		imagePath: BASE_URL + '/image/spritesheet.gif',
 		width: 9,
 		height: 6,
 		scale: 6,
@@ -40,7 +40,7 @@ define({
 		loadingColor: '#ce9925'
 	},
 	Obstacles: {
-		imagePath: '/image/spritesheet.gif',
+		imagePath: BASE_URL + '/image/spritesheet.gif',
 		width: 12,
 		height: 12,
 		scale: 6,
@@ -50,7 +50,7 @@ define({
 		loadingColor: '#f00'
 	},
 	WallThings: {
-		imagePath: '/image/spritesheet.gif',
+		imagePath: BASE_URL + '/image/spritesheet.gif',
 		width: 12,
 		height: 14,
 		scale: 6,
@@ -60,7 +60,7 @@ define({
 		loadingColor: '#0f0'
 	},
 	Door: {
-		imagePath: '/image/spritesheet.gif',
+		imagePath: BASE_URL + '/image/spritesheet.gif',
 		width: 12,
 		height: 14,
 		scale: 6,
